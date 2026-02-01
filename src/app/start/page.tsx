@@ -11,9 +11,9 @@ export default function StartPage() {
           <h1 className="text-3xl font-bold tracking-tight text-gray-900">
             How would you like to proceed?
           </h1>
-          <p className="mt-4 text-lg text-gray-600">
-            Choose whether you'd like to cook something or order out.
-          </p>
+        <p className="mt-4 text-lg text-gray-600">
+          Choose whether you&apos;d like to cook something or order out.
+        </p>
           <div className="mt-12 grid gap-6 sm:grid-cols-2">
             <Link href="/cook">
               <div className="rounded-lg border-2 border-gray-200 bg-white p-8 shadow-sm transition-all hover:border-blue-500 hover:shadow-md">

@@ -12,7 +12,7 @@ export default function Home() {
             What Should I Have For Dinner Tonight?
           </h1>
           <p className="mt-6 text-lg leading-8 text-gray-600">
-            Can't decide what to have for dinner? We'll help you choose between
+            Can&apos;t decide what to have for dinner? We&apos;ll help you choose between
             cooking something delicious or ordering out. Get personalized recipe
             suggestions based on what you have, or find the perfect restaurant
             near you.

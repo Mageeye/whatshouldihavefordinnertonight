@@ -17,8 +17,8 @@ export default function RecipesPage() {
             <h2 className="text-2xl font-semibold text-gray-900">
               Recipe Directory Coming Soon
             </h2>
-            <p className="mt-4 text-gray-600">
-              We're working on building a comprehensive recipe directory with
+          <p className="mt-4 text-gray-600">
+              We&apos;re working on building a comprehensive recipe directory with
               search, filtering, and detailed recipe pages. Stay tuned!
             </p>
           </div>

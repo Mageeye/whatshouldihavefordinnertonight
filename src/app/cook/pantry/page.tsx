@@ -22,7 +22,7 @@ export default function PantryPage() {
           Recipe Builder - Use What You Have
         </h1>
         <p className="mt-2 text-gray-600">
-          Tell us what ingredients you have, and we'll suggest recipes you can
+          Tell us what ingredients you have, and we&apos;ll suggest recipes you can
           make right now.
         </p>
         <RecipeBuilder type="pantry" />

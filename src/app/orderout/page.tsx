@@ -189,7 +189,7 @@ export default function OrderOutPage() {
               {!loading && restaurants.length === 0 && (
                 <div className="mt-6 text-center text-gray-500">
                   <p>
-                    Enter your zip code and click "Find Restaurants" to see
+                    Enter your zip code and click &quot;Find Restaurants&quot; to see
                     results here.
                   </p>
                 </div>

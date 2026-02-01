@@ -79,7 +79,7 @@ export default function DashboardPage() {
         {requests.length === 0 ? (
           <div className="mt-8 rounded-lg bg-white p-8 text-center shadow-sm">
             <p className="text-gray-600">
-              You haven't made any requests yet. Get started by{' '}
+              You haven&apos;t made any requests yet. Get started by{' '}
               <Link href="/start" className="text-blue-600 hover:text-blue-800">
                 choosing what to have for dinner
               </Link>

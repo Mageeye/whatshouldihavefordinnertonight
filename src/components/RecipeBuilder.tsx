@@ -538,7 +538,9 @@ export function RecipeBuilder({ type }: RecipeBuilderProps) {
           )}
           {!loading && recipes.length === 0 && (
             <div className="mt-6 text-center text-gray-500">
-              <p>Fill out the form and click "Generate Recipes" to see results here.</p>
+              <p>
+                Fill out the form and click &quot;Generate Recipes&quot; to see results here.
+              </p>
             </div>
           )}
           {!loading && recipes.length > 0 && (

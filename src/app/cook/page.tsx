@@ -8,9 +8,9 @@ export default function CookPage() {
       <Header />
       <main className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-3xl">
-          <h1 className="text-3xl font-bold tracking-tight text-gray-900">
-            Let's Cook Something!
-          </h1>
+        <h1 className="text-3xl font-bold tracking-tight text-gray-900">
+          Let&apos;s Cook Something!
+        </h1>
           <p className="mt-4 text-lg text-gray-600">
             Choose whether you want to use what you already have or go grocery
             shopping.
@@ -23,7 +23,7 @@ export default function CookPage() {
                   Use What I Have
                 </h2>
                 <p className="mt-2 text-gray-600">
-                  Tell us what ingredients you have, and we'll suggest recipes
+                  Tell us what ingredients you have, and we&apos;ll suggest recipes
                   you can make right now.
                 </p>
               </div>

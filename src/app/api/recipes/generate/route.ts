@@ -22,7 +22,7 @@ export async function POST(request: NextRequest) {
       request.headers.get('cf-connecting-ip') ||
       '127.0.0.1' // Default to localhost for dev
     
-    const limit = await rateLimit(`recipes:${ip}`, 3, 60_000)
+    const limit = await rateLimit(`recipes:${ip}`, 2, 60_000)
     const rateHeaders = {
       'x-rate-limit-source': limit.source,
       'x-rate-limit-remaining': String(limit.remaining),

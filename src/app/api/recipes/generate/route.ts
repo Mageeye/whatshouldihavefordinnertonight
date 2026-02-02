@@ -3,6 +3,7 @@ import { Prisma } from '@prisma/client'
 import { auth } from '@/lib/auth'
 import { prisma } from '@/lib/db'
 import { getRecipeProvider } from '@/lib/recipeProviders/mockProvider'
+import { rateLimit } from '@/lib/rateLimit'
 import {
   PantryRecipeRequestSchema,
   GroceryRecipeRequestSchema,
@@ -12,6 +13,18 @@ export const dynamic = 'force-dynamic'
 
 export async function POST(request: NextRequest) {
   try {
+    const ip =
+      request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
+      request.headers.get('x-real-ip') ||
+      'unknown'
+    const limit = rateLimit(`recipes:${ip}`, 10, 60_000)
+    if (!limit.ok) {
+      return NextResponse.json(
+        { error: 'Rate limit exceeded. Try again in a minute.' },
+        { status: 429 }
+      )
+    }
+
     const body = await request.json()
     const { type, ...requestData } = body
 

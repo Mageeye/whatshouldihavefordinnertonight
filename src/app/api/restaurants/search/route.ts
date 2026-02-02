@@ -3,12 +3,25 @@ import { Prisma } from '@prisma/client'
 import { auth } from '@/lib/auth'
 import { prisma } from '@/lib/db'
 import { getRestaurantProvider } from '@/lib/restaurantProviders/mockProvider'
+import { rateLimit } from '@/lib/rateLimit'
 import { OrderOutRequestSchema } from '@/lib/validations'
 
 export const dynamic = 'force-dynamic'
 
 export async function POST(request: NextRequest) {
   try {
+    const ip =
+      request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
+      request.headers.get('x-real-ip') ||
+      'unknown'
+    const limit = rateLimit(`restaurants:${ip}`, 20, 60_000)
+    if (!limit.ok) {
+      return NextResponse.json(
+        { error: 'Rate limit exceeded. Try again in a minute.' },
+        { status: 429 }
+      )
+    }
+
     const body = await request.json()
     const validatedData = OrderOutRequestSchema.parse(body)
 

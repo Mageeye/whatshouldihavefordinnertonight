@@ -17,6 +17,7 @@
     "@auth/prisma-adapter": "^2.4.0",
     "@prisma/client": "^5.7.1",
     "@tailwindcss/typography": "^0.5.10",
+    "@upstash/redis": "^1.36.1",
     "gray-matter": "^4.0.3",
     "next": "14.0.4",
     "next-auth": "^5.0.0-beta.4",

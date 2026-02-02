@@ -13,14 +13,23 @@ export const dynamic = 'force-dynamic'
 
 export async function POST(request: NextRequest) {
   try {
+    // Get IP address - prioritize forwarded headers, fallback to connection IP
+    const forwardedFor = request.headers.get('x-forwarded-for')
+    const realIp = request.headers.get('x-real-ip')
     const ip =
-      request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
-      request.headers.get('x-real-ip') ||
-      'unknown'
-    const limit = rateLimit(`recipes:${ip}`, 6, 60_000)
+      forwardedFor?.split(',')[0]?.trim() ||
+      realIp ||
+      request.headers.get('cf-connecting-ip') ||
+      '127.0.0.1' // Default to localhost for dev
+    
+    const limit = await rateLimit(`recipes:${ip}`, 6, 60_000)
     if (!limit.ok) {
       return NextResponse.json(
-        { error: 'Rate limit exceeded. Try again in a minute.' },
+        { 
+          error: 'Rate limit exceeded. Try again in a minute.',
+          remaining: limit.remaining,
+          resetAt: new Date(limit.resetAt).toISOString()
+        },
         { status: 429 }
       )
     }

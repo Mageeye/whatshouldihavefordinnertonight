@@ -1,4 +1,5 @@
 import { Restaurant, RestaurantProvider, RestaurantSearchRequest } from './provider'
+import { GooglePlacesProvider } from './googlePlacesProvider'
 
 export class MockRestaurantProvider implements RestaurantProvider {
   async searchRestaurants(request: RestaurantSearchRequest): Promise<Restaurant[]> {
@@ -87,6 +88,8 @@ export const getRestaurantProvider = (): RestaurantProvider => {
   const provider = process.env.RESTAURANT_API_PROVIDER || 'mock'
   
   switch (provider) {
+    case 'google':
+      return new GooglePlacesProvider()
     case 'mock':
       return new MockRestaurantProvider()
     default:

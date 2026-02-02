@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { Prisma } from '@prisma/client'
 import { auth } from '@/lib/auth'
 import { prisma } from '@/lib/db'
 import { getRecipeProvider } from '@/lib/recipeProviders/mockProvider'
@@ -41,7 +42,7 @@ export async function POST(request: NextRequest) {
       await prisma.recipeResult.create({
         data: {
           requestId: recipeRequest.id,
-          outputJson: recipes,
+          outputJson: recipes as Prisma.InputJsonValue,
         },
       })
     }

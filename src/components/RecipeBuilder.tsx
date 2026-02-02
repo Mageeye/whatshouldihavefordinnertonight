@@ -503,7 +503,7 @@ export function RecipeBuilder({ type }: RecipeBuilderProps) {
               onChange={(e) => setNumberOfRecipes(parseInt(e.target.value))}
               className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
             >
-              {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num) => (
+            {[1, 2, 3].map((num) => (
                 <option key={num} value={num}>
                   {num}
                 </option>

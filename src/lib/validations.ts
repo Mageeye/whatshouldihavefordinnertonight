@@ -18,7 +18,7 @@ export const PantryRecipeRequestSchema = z.object({
     })
     .optional(),
   servings: z.number().min(1).max(20).default(2),
-  numberOfRecipes: z.number().min(1).max(10).default(3),
+  numberOfRecipes: z.number().min(1).max(3).default(3),
 })
 
 export const GroceryRecipeRequestSchema = PantryRecipeRequestSchema.extend({

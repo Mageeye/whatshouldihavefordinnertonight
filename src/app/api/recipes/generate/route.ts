@@ -17,7 +17,7 @@ export async function POST(request: NextRequest) {
       request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
       request.headers.get('x-real-ip') ||
       'unknown'
-    const limit = rateLimit(`recipes:${ip}`, 10, 60_000)
+    const limit = rateLimit(`recipes:${ip}`, 6, 60_000)
     if (!limit.ok) {
       return NextResponse.json(
         { error: 'Rate limit exceeded. Try again in a minute.' },

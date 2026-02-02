@@ -104,6 +104,6 @@ export class GooglePlacesProvider implements RestaurantProvider {
       results = results.filter((r) => lower.includes(r.cuisine.toLowerCase()))
     }
 
-    return results.slice(0, 10)
+    return results.slice(0, 8)
   }
 }

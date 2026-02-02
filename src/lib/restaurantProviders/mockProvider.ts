@@ -80,7 +80,7 @@ export class MockRestaurantProvider implements RestaurantProvider {
       }
     }
 
-    return filtered.slice(0, 5)
+    return filtered.slice(0, 8)
   }
 }
 

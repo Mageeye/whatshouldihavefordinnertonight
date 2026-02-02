@@ -5,6 +5,8 @@ import { prisma } from '@/lib/db'
 import { getRestaurantProvider } from '@/lib/restaurantProviders/mockProvider'
 import { OrderOutRequestSchema } from '@/lib/validations'
 
+export const dynamic = 'force-dynamic'
+
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()

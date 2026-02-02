@@ -31,7 +31,7 @@ export async function POST(request: NextRequest) {
       await prisma.recipeResult.create({
         data: {
           requestId: recipeRequest.id,
-          outputJson: restaurants as Prisma.InputJsonValue,
+          outputJson: restaurants as unknown as Prisma.InputJsonValue,
         },
       })
     }

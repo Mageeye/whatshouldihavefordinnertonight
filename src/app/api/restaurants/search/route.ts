@@ -20,14 +20,20 @@ export async function POST(request: NextRequest) {
       '127.0.0.1' // Default to localhost for dev
     
     const limit = await rateLimit(`restaurants:${ip}`, 10, 60_000)
+    const rateHeaders = {
+      'x-rate-limit-source': limit.source,
+      'x-rate-limit-remaining': String(limit.remaining),
+      'x-rate-limit-reset': new Date(limit.resetAt).toISOString(),
+    }
+
     if (!limit.ok) {
       return NextResponse.json(
-        { 
+        {
           error: 'Rate limit exceeded. Try again in a minute.',
           remaining: limit.remaining,
-          resetAt: new Date(limit.resetAt).toISOString()
+          resetAt: new Date(limit.resetAt).toISOString(),
         },
-        { status: 429 }
+        { status: 429, headers: rateHeaders }
       )
     }
 
@@ -60,7 +66,7 @@ export async function POST(request: NextRequest) {
       })
     }
 
-    return NextResponse.json({ restaurants })
+    return NextResponse.json({ restaurants }, { headers: rateHeaders })
   } catch (error: any) {
     if (error.name === 'ZodError') {
       return NextResponse.json(

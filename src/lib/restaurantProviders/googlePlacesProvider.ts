@@ -5,25 +5,29 @@ import {
 } from './provider'
 
 type PlacesTextSearchResponse = {
-  results?: Array<{
-    place_id: string
-    name: string
+  places?: Array<{
+    id: string
+    displayName?: { text?: string }
     rating?: number
-    price_level?: number
-    formatted_address?: string
+    priceLevel?:
+      | 'PRICE_LEVEL_UNSPECIFIED'
+      | 'PRICE_LEVEL_FREE'
+      | 'PRICE_LEVEL_INEXPENSIVE'
+      | 'PRICE_LEVEL_MODERATE'
+      | 'PRICE_LEVEL_EXPENSIVE'
+      | 'PRICE_LEVEL_VERY_EXPENSIVE'
+    formattedAddress?: string
     types?: string[]
-    photos?: Array<{ photo_reference: string }>
   }>
-  status: string
-  error_message?: string
 }
 
-const PRICE_LEVEL_MAP: Record<number, string> = {
-  0: '$',
-  1: '$',
-  2: '$$',
-  3: '$$$',
-  4: '$$$$',
+const PRICE_LEVEL_MAP: Record<string, string> = {
+  PRICE_LEVEL_FREE: '$',
+  PRICE_LEVEL_INEXPENSIVE: '$',
+  PRICE_LEVEL_MODERATE: '$$',
+  PRICE_LEVEL_EXPENSIVE: '$$$',
+  PRICE_LEVEL_VERY_EXPENSIVE: '$$$$',
+  PRICE_LEVEL_UNSPECIFIED: '$$',
 }
 
 const titleize = (value: string) =>
@@ -42,43 +46,45 @@ export class GooglePlacesProvider implements RestaurantProvider {
 
     const moodPart = request.mood ? `${request.mood} ` : ''
     const query = `${moodPart}restaurants in ${request.zipCode}`
-    const url = new URL(
-      'https://maps.googleapis.com/maps/api/place/textsearch/json'
+    const response = await fetch(
+      'https://places.googleapis.com/v1/places:searchText',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Goog-Api-Key': apiKey,
+          'X-Goog-FieldMask':
+            'places.id,places.displayName,places.rating,places.priceLevel,places.formattedAddress,places.types',
+        },
+        body: JSON.stringify({
+          textQuery: query,
+          languageCode: 'en',
+        }),
+      }
     )
-    url.searchParams.set('query', query)
-    url.searchParams.set('key', apiKey)
-
-    const response = await fetch(url.toString())
     if (!response.ok) {
       const text = await response.text()
       throw new Error(`Google Places error: ${text}`)
     }
 
     const data = (await response.json()) as PlacesTextSearchResponse
-    if (data.status !== 'OK' && data.status !== 'ZERO_RESULTS') {
-      throw new Error(
-        data.error_message ||
-          `Google Places error: ${data.status || 'UNKNOWN'}`
-      )
-    }
 
     let results =
-      data.results?.map((place) => {
+      data.places?.map((place) => {
         const type = place.types?.[0]
         const cuisine = type ? titleize(type) : 'Restaurant'
-        const priceRange =
-          place.price_level !== undefined
-            ? PRICE_LEVEL_MAP[place.price_level] || '$$'
-            : '$$'
+        const priceRange = place.priceLevel
+          ? PRICE_LEVEL_MAP[place.priceLevel] || '$$'
+          : '$$'
 
         return {
-          id: place.place_id,
-          name: place.name,
+          id: place.id,
+          name: place.displayName?.text || 'Restaurant',
           cuisine,
           rating: place.rating ?? 0,
           priceRange,
           distance: 'N/A',
-          address: place.formatted_address || '',
+          address: place.formattedAddress || '',
           description: '',
         }
       }) || []

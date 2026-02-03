@@ -184,8 +184,8 @@ export function RecipeBuilder({ type }: RecipeBuilderProps) {
     <div className="mt-8 grid gap-8 lg:grid-cols-2">
       {/* Left Column - Form */}
       <div className="space-y-6">
-        <div className="rounded-lg bg-white p-6 shadow-sm">
-          <h2 className="text-xl font-semibold text-gray-900">Ingredients</h2>
+        <div className="rounded-lg bg-card p-6 shadow-sm border border-border">
+          <h2 className="text-xl font-semibold text-foreground">Ingredients</h2>
           <div className="mt-4">
             <div className="flex gap-2">
               <input
@@ -194,7 +194,7 @@ export function RecipeBuilder({ type }: RecipeBuilderProps) {
                 onChange={(e) => setIngredientInput(e.target.value)}
                 onKeyPress={(e) => e.key === 'Enter' && addIngredient()}
                 placeholder="Add ingredient..."
-                className="flex-1 rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                className="flex-1 rounded-md border border-border bg-background px-3 py-2 text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
               />
               <Button onClick={addIngredient} size="sm">
                 Add
@@ -204,12 +204,12 @@ export function RecipeBuilder({ type }: RecipeBuilderProps) {
               {ingredients.map((ing) => (
                 <span
                   key={ing}
-                  className="inline-flex items-center gap-1 rounded-full bg-blue-100 px-3 py-1 text-sm text-blue-800"
+                  className="inline-flex items-center gap-1 rounded-full bg-primary/10 px-3 py-1 text-sm text-primary"
                 >
                   {ing}
                   <button
                     onClick={() => removeIngredient(ing)}
-                    className="text-blue-600 hover:text-blue-800"
+                    className="text-primary/70 hover:text-primary"
                   >
                     ×
                   </button>
@@ -217,7 +217,7 @@ export function RecipeBuilder({ type }: RecipeBuilderProps) {
               ))}
             </div>
             <div className="mt-3">
-              <p className="text-sm text-gray-600">Quick add:</p>
+              <p className="text-sm text-muted-foreground">Quick add:</p>
               <div className="mt-2 flex flex-wrap gap-2">
                 {QUICK_INGREDIENTS.map((ing) => (
                   <button
@@ -227,7 +227,7 @@ export function RecipeBuilder({ type }: RecipeBuilderProps) {
                         setIngredients([...ingredients, ing])
                       }
                     }}
-                    className="rounded-md border border-gray-300 bg-white px-2 py-1 text-xs text-gray-700 hover:bg-gray-50"
+                    className="rounded-md border border-border bg-card px-2 py-1 text-xs text-muted-foreground hover:bg-muted"
                   >
                     + {ing}
                   </button>
@@ -245,8 +245,8 @@ export function RecipeBuilder({ type }: RecipeBuilderProps) {
           </div>
         </div>
 
-        <div className="rounded-lg bg-white p-6 shadow-sm">
-          <h2 className="text-xl font-semibold text-gray-900">
+        <div className="rounded-lg bg-card p-6 shadow-sm border border-border">
+          <h2 className="text-xl font-semibold text-foreground">
             Dietary Requirements
           </h2>
           <div className="mt-4 flex flex-wrap gap-2">
@@ -256,8 +256,8 @@ export function RecipeBuilder({ type }: RecipeBuilderProps) {
                 onClick={() => toggleDietary(option)}
                 className={`rounded-full px-4 py-2 text-sm font-medium transition-colors ${
                   dietaryRequirements.includes(option)
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    ? 'bg-primary text-primary-foreground'
+                    : 'bg-muted text-muted-foreground hover:bg-muted/80'
                 }`}
               >
                 {option}
@@ -266,8 +266,8 @@ export function RecipeBuilder({ type }: RecipeBuilderProps) {
           </div>
         </div>
 
-        <div className="rounded-lg bg-white p-6 shadow-sm">
-          <h2 className="text-xl font-semibold text-gray-900">Allergies</h2>
+        <div className="rounded-lg bg-card p-6 shadow-sm border border-border">
+          <h2 className="text-xl font-semibold text-foreground">Allergies</h2>
           <div className="mt-4 flex flex-wrap gap-2">
             {ALLERGY_OPTIONS.map((option) => (
               <button
@@ -275,8 +275,8 @@ export function RecipeBuilder({ type }: RecipeBuilderProps) {
                 onClick={() => toggleAllergy(option)}
                 className={`rounded-full px-4 py-2 text-sm font-medium transition-colors ${
                   allergies.includes(option)
-                    ? 'bg-red-600 text-white'
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    ? 'bg-destructive text-destructive-foreground'
+                    : 'bg-muted text-muted-foreground hover:bg-muted/80'
                 }`}
               >
                 {option}
@@ -286,14 +286,14 @@ export function RecipeBuilder({ type }: RecipeBuilderProps) {
         </div>
 
         <div className="grid gap-4 sm:grid-cols-2">
-          <div className="rounded-lg bg-white p-4 shadow-sm">
-            <label className="block text-sm font-medium text-gray-700">
+          <div className="rounded-lg bg-card p-4 shadow-sm border border-border">
+            <label className="block text-sm font-medium text-foreground">
               Meal Type
             </label>
             <select
               value={mealType}
               onChange={(e) => setMealType(e.target.value)}
-              className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+              className="mt-1 block w-full rounded-md border border-border bg-background px-3 py-2 text-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
             >
               <option value="">Any</option>
               {MEAL_TYPES.map((type) => (
@@ -304,14 +304,14 @@ export function RecipeBuilder({ type }: RecipeBuilderProps) {
             </select>
           </div>
 
-          <div className="rounded-lg bg-white p-4 shadow-sm">
-            <label className="block text-sm font-medium text-gray-700">
+          <div className="rounded-lg bg-card p-4 shadow-sm border border-border">
+            <label className="block text-sm font-medium text-foreground">
               Time Available
             </label>
             <select
               value={timeAvailable}
               onChange={(e) => setTimeAvailable(e.target.value)}
-              className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+              className="mt-1 block w-full rounded-md border border-border bg-background px-3 py-2 text-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
             >
               <option value="">Any</option>
               {TIME_OPTIONS.map((time) => (
@@ -322,14 +322,14 @@ export function RecipeBuilder({ type }: RecipeBuilderProps) {
             </select>
           </div>
 
-          <div className="rounded-lg bg-white p-4 shadow-sm">
-            <label className="block text-sm font-medium text-gray-700">
+          <div className="rounded-lg bg-card p-4 shadow-sm border border-border">
+            <label className="block text-sm font-medium text-foreground">
               Skill Level
             </label>
             <select
               value={skillLevel}
               onChange={(e) => setSkillLevel(e.target.value)}
-              className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+              className="mt-1 block w-full rounded-md border border-border bg-background px-3 py-2 text-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
             >
               <option value="">Any</option>
               {SKILL_LEVELS.map((level) => (
@@ -340,14 +340,14 @@ export function RecipeBuilder({ type }: RecipeBuilderProps) {
             </select>
           </div>
 
-          <div className="rounded-lg bg-white p-4 shadow-sm">
-            <label className="block text-sm font-medium text-gray-700">
+          <div className="rounded-lg bg-card p-4 shadow-sm border border-border">
+            <label className="block text-sm font-medium text-foreground">
               Cuisine
             </label>
             <select
               value={cuisine}
               onChange={(e) => setCuisine(e.target.value)}
-              className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+              className="mt-1 block w-full rounded-md border border-border bg-background px-3 py-2 text-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
             >
               <option value="">Any</option>
               {CUISINES.map((c) => (
@@ -359,19 +359,19 @@ export function RecipeBuilder({ type }: RecipeBuilderProps) {
           </div>
         </div>
 
-        <div className="rounded-lg bg-white p-6 shadow-sm">
-          <h2 className="text-xl font-semibold text-gray-900">Appliances</h2>
+        <div className="rounded-lg bg-card p-6 shadow-sm border border-border">
+          <h2 className="text-xl font-semibold text-foreground">Appliances</h2>
           <div className="mt-4 flex flex-wrap gap-2">
             {APPLIANCES.map((appliance) => (
               <label
                 key={appliance}
-                className="flex items-center gap-2 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm hover:bg-gray-50"
+                className="flex items-center gap-2 rounded-md border border-border bg-card px-3 py-2 text-sm text-foreground hover:bg-muted cursor-pointer"
               >
                 <input
                   type="checkbox"
                   checked={appliances.includes(appliance)}
                   onChange={() => toggleAppliance(appliance)}
-                  className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                  className="rounded border-border text-primary focus:ring-primary"
                 />
                 {appliance}
               </label>
@@ -379,65 +379,65 @@ export function RecipeBuilder({ type }: RecipeBuilderProps) {
           </div>
         </div>
 
-        <div className="rounded-lg bg-white p-6 shadow-sm">
+        <div className="rounded-lg bg-card p-6 shadow-sm border border-border">
           <div className="flex items-center justify-between">
-            <h2 className="text-xl font-semibold text-gray-900">
+            <h2 className="text-xl font-semibold text-foreground">
               Macro Targets (per serving)
             </h2>
-            <label className="flex items-center gap-2">
+            <label className="flex items-center gap-2 cursor-pointer">
               <input
                 type="checkbox"
                 checked={macroTargetsEnabled}
                 onChange={(e) => setMacroTargetsEnabled(e.target.checked)}
-                className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                className="rounded border-border text-primary focus:ring-primary"
               />
-              <span className="text-sm text-gray-700">Enable</span>
+              <span className="text-sm text-muted-foreground">Enable</span>
             </label>
           </div>
           {macroTargetsEnabled && (
             <div className="mt-4 grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700">
+                <label className="block text-sm font-medium text-foreground">
                   Calories
                 </label>
                 <input
                   type="number"
                   value={calories}
                   onChange={(e) => setCalories(e.target.value)}
-                  className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                  className="mt-1 block w-full rounded-md border border-border bg-background px-3 py-2 text-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700">
+                <label className="block text-sm font-medium text-foreground">
                   Protein (g)
                 </label>
                 <input
                   type="number"
                   value={protein}
                   onChange={(e) => setProtein(e.target.value)}
-                  className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                  className="mt-1 block w-full rounded-md border border-border bg-background px-3 py-2 text-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700">
+                <label className="block text-sm font-medium text-foreground">
                   Carbs (g)
                 </label>
                 <input
                   type="number"
                   value={carbs}
                   onChange={(e) => setCarbs(e.target.value)}
-                  className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                  className="mt-1 block w-full rounded-md border border-border bg-background px-3 py-2 text-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700">
+                <label className="block text-sm font-medium text-foreground">
                   Fat (g)
                 </label>
                 <input
                   type="number"
                   value={fat}
                   onChange={(e) => setFat(e.target.value)}
-                  className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                  className="mt-1 block w-full rounded-md border border-border bg-background px-3 py-2 text-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
                 />
               </div>
             </div>
@@ -446,8 +446,8 @@ export function RecipeBuilder({ type }: RecipeBuilderProps) {
 
         {type === 'grocery' && (
           <div className="grid gap-4 sm:grid-cols-2">
-            <div className="rounded-lg bg-white p-4 shadow-sm">
-              <label className="block text-sm font-medium text-gray-700">
+            <div className="rounded-lg bg-card p-4 shadow-sm border border-border">
+              <label className="block text-sm font-medium text-foreground">
                 Budget ($)
               </label>
               <input
@@ -455,11 +455,11 @@ export function RecipeBuilder({ type }: RecipeBuilderProps) {
                 value={budget}
                 onChange={(e) => setBudget(e.target.value)}
                 placeholder="Optional"
-                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                className="mt-1 block w-full rounded-md border border-border bg-background px-3 py-2 text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
               />
             </div>
-            <div className="rounded-lg bg-white p-4 shadow-sm">
-              <label className="block text-sm font-medium text-gray-700">
+            <div className="rounded-lg bg-card p-4 shadow-sm border border-border">
+              <label className="block text-sm font-medium text-foreground">
                 Store Preference
               </label>
               <input
@@ -467,41 +467,41 @@ export function RecipeBuilder({ type }: RecipeBuilderProps) {
                 value={storePreference}
                 onChange={(e) => setStorePreference(e.target.value)}
                 placeholder="Optional"
-                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                className="mt-1 block w-full rounded-md border border-border bg-background px-3 py-2 text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
               />
             </div>
           </div>
         )}
 
         <div className="grid gap-4 sm:grid-cols-2">
-          <div className="rounded-lg bg-white p-4 shadow-sm">
-            <label className="block text-sm font-medium text-gray-700">
+          <div className="rounded-lg bg-card p-4 shadow-sm border border-border">
+            <label className="block text-sm font-medium text-foreground">
               Servings
             </label>
             <div className="mt-1 flex items-center gap-2">
               <button
                 onClick={() => setServings(Math.max(1, servings - 1))}
-                className="rounded-md border border-gray-300 px-3 py-1 hover:bg-gray-50"
+                className="rounded-md border border-border px-3 py-1 text-foreground hover:bg-muted"
               >
                 −
               </button>
-              <span className="w-12 text-center font-medium">{servings}</span>
+              <span className="w-12 text-center font-medium text-foreground">{servings}</span>
               <button
                 onClick={() => setServings(Math.min(20, servings + 1))}
-                className="rounded-md border border-gray-300 px-3 py-1 hover:bg-gray-50"
+                className="rounded-md border border-border px-3 py-1 text-foreground hover:bg-muted"
               >
                 +
               </button>
             </div>
           </div>
-          <div className="rounded-lg bg-white p-4 shadow-sm">
-            <label className="block text-sm font-medium text-gray-700">
+          <div className="rounded-lg bg-card p-4 shadow-sm border border-border">
+            <label className="block text-sm font-medium text-foreground">
               Number of Recipes
             </label>
             <select
               value={numberOfRecipes}
               onChange={(e) => setNumberOfRecipes(parseInt(e.target.value))}
-              className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+              className="mt-1 block w-full rounded-md border border-border bg-background px-3 py-2 text-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
             >
             {[1, 2, 3].map((num) => (
                 <option key={num} value={num}>
@@ -513,7 +513,7 @@ export function RecipeBuilder({ type }: RecipeBuilderProps) {
         </div>
 
         {error && (
-          <div className="rounded-md bg-red-50 p-4 text-red-800">{error}</div>
+          <div className="rounded-md bg-destructive/10 p-4 text-destructive">{error}</div>
         )}
 
         <Button
@@ -528,16 +528,16 @@ export function RecipeBuilder({ type }: RecipeBuilderProps) {
 
       {/* Right Column - Results */}
       <div className="lg:sticky lg:top-8 lg:h-fit">
-        <div className="rounded-lg bg-white p-6 shadow-sm">
-          <h2 className="text-xl font-semibold text-gray-900">Recipe Results</h2>
+        <div className="rounded-lg bg-card p-6 shadow-sm border border-border">
+          <h2 className="text-xl font-semibold text-foreground">Recipe Results</h2>
           {loading && (
-            <div className="mt-6 text-center text-gray-600">
-              <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-blue-600 border-t-transparent"></div>
+            <div className="mt-6 text-center text-muted-foreground">
+              <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent"></div>
               <p className="mt-2">Generating recipes...</p>
             </div>
           )}
           {!loading && recipes.length === 0 && (
-            <div className="mt-6 text-center text-gray-500">
+            <div className="mt-6 text-center text-muted-foreground">
               <p>
                 Fill out the form and click &quot;Generate Recipes&quot; to see results here.
               </p>
@@ -548,15 +548,15 @@ export function RecipeBuilder({ type }: RecipeBuilderProps) {
               {recipes.map((recipe) => (
                 <div
                   key={recipe.id}
-                  className="rounded-lg border border-gray-200 p-4"
+                  className="rounded-lg border border-border p-4"
                 >
-                  <h3 className="text-lg font-semibold text-gray-900">
+                  <h3 className="text-lg font-semibold text-foreground">
                     {recipe.title}
                   </h3>
-                  <p className="mt-1 text-sm text-gray-600">
+                  <p className="mt-1 text-sm text-muted-foreground">
                     {recipe.description}
                   </p>
-                  <div className="mt-3 flex flex-wrap gap-2 text-xs text-gray-500">
+                  <div className="mt-3 flex flex-wrap gap-2 text-xs text-muted-foreground">
                     {recipe.prepTime && <span>Prep: {recipe.prepTime} min</span>}
                     {recipe.cookTime && <span>Cook: {recipe.cookTime} min</span>}
                     {recipe.servings && <span>Serves: {recipe.servings}</span>}
@@ -566,8 +566,8 @@ export function RecipeBuilder({ type }: RecipeBuilderProps) {
                     )}
                   </div>
                   {recipe.nutrition && (
-                    <div className="mt-3 text-xs text-gray-600">
-                      <strong>Nutrition (per serving):</strong>{' '}
+                    <div className="mt-3 text-xs text-muted-foreground">
+                      <strong className="text-foreground">Nutrition (per serving):</strong>{' '}
                       {recipe.nutrition.calories && (
                         <span>{recipe.nutrition.calories} cal</span>
                       )}
@@ -584,21 +584,21 @@ export function RecipeBuilder({ type }: RecipeBuilderProps) {
                   )}
                   <div className="mt-4">
                     <details className="text-sm">
-                      <summary className="cursor-pointer font-medium text-blue-600 hover:text-blue-800">
+                      <summary className="cursor-pointer font-medium text-primary hover:text-primary/80">
                         View Recipe
                       </summary>
                       <div className="mt-2 space-y-2">
                         <div>
-                          <strong className="text-gray-700">Ingredients:</strong>
-                          <ul className="ml-4 list-disc text-gray-600">
+                          <strong className="text-foreground">Ingredients:</strong>
+                          <ul className="ml-4 list-disc text-muted-foreground">
                             {recipe.ingredients.map((ing, idx) => (
                               <li key={idx}>{ing}</li>
                             ))}
                           </ul>
                         </div>
                         <div>
-                          <strong className="text-gray-700">Instructions:</strong>
-                          <ol className="ml-4 list-decimal text-gray-600">
+                          <strong className="text-foreground">Instructions:</strong>
+                          <ol className="ml-4 list-decimal text-muted-foreground">
                             {recipe.instructions.map((step, idx) => (
                               <li key={idx}>{step}</li>
                             ))}

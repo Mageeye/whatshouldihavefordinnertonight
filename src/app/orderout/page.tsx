@@ -84,26 +84,25 @@ export default function OrderOutPage() {
   return (
     <div className="min-h-screen bg-background">
       <SiteHeader />
-      <main className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+      <main className="mx-auto max-w-5xl px-4 py-12 md:py-16">
         <div className="mb-6">
-          <Link href="/start">
+          <Link href="/">
             <Button variant="outline" size="sm">
               ← Back
             </Button>
           </Link>
         </div>
-        <h1 className="text-3xl font-bold tracking-tight text-foreground">
-          Order Out
+        <h1 className="text-3xl font-semibold tracking-tight text-foreground md:text-5xl">
+          Order out
         </h1>
-        <p className="mt-2 text-muted-foreground">
-          Find the perfect restaurant near you based on your mood and
-          preferences.
+        <p className="mt-4 text-base text-muted-foreground md:text-lg">
+          Pick a vibe + diet. Get a short list you&apos;ll actually want.
         </p>
 
         <div className="mt-8 grid gap-8 lg:grid-cols-2">
           {/* Left Column - Form */}
           <div className="space-y-6">
-            <div className="rounded-lg bg-card p-6 shadow-sm border border-border">
+            <div className="rounded-xl bg-card p-6 shadow-sm border border-border">
               <label className="block text-sm font-medium text-foreground">
                 Zip Code *
               </label>
@@ -112,23 +111,23 @@ export default function OrderOutPage() {
                 value={zipCode}
                 onChange={(e) => setZipCode(e.target.value)}
                 placeholder="12345"
-                className="mt-1 block w-full rounded-md border border-border bg-background px-3 py-2 text-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                className="mt-2 block w-full rounded-lg border border-border bg-background px-4 py-3 text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
               />
             </div>
 
-            <div className="rounded-lg bg-card p-6 shadow-sm border border-border">
-              <h2 className="text-xl font-semibold text-foreground">
-                What are you in the mood for?
+            <div className="rounded-xl bg-card p-6 shadow-sm border border-border">
+              <h2 className="text-lg font-medium text-foreground">
+                What sounds good?
               </h2>
               <div className="mt-4 flex flex-wrap gap-2">
                 {MOODS.map((m) => (
                   <button
                     key={m}
                     onClick={() => setMood(mood === m ? '' : m)}
-                    className={`rounded-full px-4 py-2 text-sm font-medium transition-colors ${
+                    className={`rounded-full px-4 py-2.5 text-sm font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ${
                       mood === m
-                        ? 'bg-primary text-primary-foreground'
-                        : 'bg-muted text-muted-foreground hover:bg-muted/80'
+                        ? 'bg-primary text-primary-foreground shadow-sm'
+                        : 'bg-muted text-muted-foreground hover:bg-muted/80 hover:text-foreground'
                     }`}
                   >
                     {m}
@@ -137,19 +136,19 @@ export default function OrderOutPage() {
               </div>
             </div>
 
-            <div className="rounded-lg bg-card p-6 shadow-sm border border-border">
-              <h2 className="text-xl font-semibold text-foreground">
-                Dietary Needs
+            <div className="rounded-xl bg-card p-6 shadow-sm border border-border">
+              <h2 className="text-lg font-medium text-foreground">
+                Diet &amp; restrictions
               </h2>
               <div className="mt-4 flex flex-wrap gap-2">
                 {DIETARY_NEEDS.map((need) => (
                   <button
                     key={need}
                     onClick={() => toggleDietary(need)}
-                    className={`rounded-full px-4 py-2 text-sm font-medium transition-colors ${
+                    className={`rounded-full px-4 py-2.5 text-sm font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ${
                       dietaryNeeds.includes(need)
-                        ? 'bg-primary text-primary-foreground'
-                        : 'bg-muted text-muted-foreground hover:bg-muted/80'
+                        ? 'bg-primary text-primary-foreground shadow-sm'
+                        : 'bg-muted text-muted-foreground hover:bg-muted/80 hover:text-foreground'
                     }`}
                   >
                     {need}
@@ -159,7 +158,7 @@ export default function OrderOutPage() {
             </div>
 
             {error && (
-              <div className="rounded-md bg-destructive/10 p-4 text-destructive">
+              <div className="rounded-lg bg-destructive/10 p-4 text-destructive">
                 {error}
               </div>
             )}
@@ -168,17 +167,17 @@ export default function OrderOutPage() {
               onClick={handleSearch}
               disabled={loading || !zipCode}
               size="lg"
-              className="w-full"
+              className="w-full h-12 text-base shadow-sm"
             >
-              {loading ? 'Searching...' : 'Find Restaurants'}
+              {loading ? 'Searching...' : 'Show me options'}
             </Button>
           </div>
 
           {/* Right Column - Results */}
           <div className="lg:sticky lg:top-8 lg:h-fit">
-            <div className="rounded-lg bg-card p-6 shadow-sm border border-border">
-              <h2 className="text-xl font-semibold text-foreground">
-                Restaurant Results
+            <div className="rounded-xl bg-card p-6 shadow-sm border border-border">
+              <h2 className="text-lg font-medium text-foreground">
+                Results
               </h2>
               {loading && (
                 <div className="mt-6 text-center text-muted-foreground">
@@ -189,8 +188,7 @@ export default function OrderOutPage() {
               {!loading && restaurants.length === 0 && (
                 <div className="mt-6 text-center text-muted-foreground">
                   <p>
-                    Enter your zip code and click &quot;Find Restaurants&quot; to see
-                    results here.
+                    Enter your zip and click Show me options.
                   </p>
                 </div>
               )}
@@ -199,11 +197,11 @@ export default function OrderOutPage() {
                   {restaurants.map((restaurant) => (
                     <div
                       key={restaurant.id}
-                      className="rounded-lg border border-border p-4"
+                      className="rounded-lg border border-border p-4 transition-colors hover:bg-muted/50"
                     >
                       <div className="flex items-start justify-between">
                         <div className="flex-1">
-                          <h3 className="text-lg font-semibold text-foreground">
+                          <h3 className="text-base font-semibold text-foreground">
                             {restaurant.name}
                           </h3>
                           <p className="mt-1 text-sm text-muted-foreground">

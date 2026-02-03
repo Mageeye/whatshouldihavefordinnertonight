@@ -6,35 +6,47 @@ export default function StartPage() {
   return (
     <div className="min-h-screen bg-background">
       <SiteHeader />
-      <main className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+      <main className="mx-auto max-w-5xl px-4 py-12 md:py-16">
         <div className="mx-auto max-w-3xl">
-          <h1 className="text-3xl font-bold tracking-tight text-foreground">
-            How would you like to proceed?
+          <h1 className="text-3xl font-semibold tracking-tight text-foreground md:text-5xl">
+            What&apos;s the move tonight?
           </h1>
-        <p className="mt-4 text-lg text-muted-foreground">
-          Choose whether you&apos;d like to cook something or order out.
-        </p>
-          <div className="mt-12 grid gap-6 sm:grid-cols-2">
-            <Link href="/cook">
-              <div className="rounded-lg border-2 border-border bg-card p-8 shadow-sm transition-all hover:border-primary hover:shadow-md">
-                <div className="text-4xl mb-4">👨‍🍳</div>
-                <h2 className="text-2xl font-semibold text-foreground">Cook</h2>
-                <p className="mt-2 text-muted-foreground">
-                  Make something delicious at home. Use what you have or get
-                  grocery suggestions.
-                </p>
+          <p className="mt-4 text-base text-muted-foreground md:text-lg">
+            Pick a path. We&apos;ll handle the decision fatigue.
+          </p>
+          <div className="mt-10 grid gap-4 sm:grid-cols-2">
+            <Link
+              href="/cook"
+              className="group rounded-xl border border-border bg-card p-6 shadow-sm transition-all hover:border-primary/50 hover:shadow-md hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+            >
+              <div className="text-4xl mb-3">👨‍🍳</div>
+              <h2 className="text-lg font-medium text-foreground">
+                Cook something easy
+              </h2>
+              <p className="mt-1 text-sm text-muted-foreground">
+                Use pantry ingredients or build a quick grocery plan.
+              </p>
+              <div className="mt-4">
+                <span className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow-sm transition-colors group-hover:bg-primary/90">
+                  Cook
+                </span>
               </div>
             </Link>
-            <Link href="/orderout">
-              <div className="rounded-lg border-2 border-border bg-card p-8 shadow-sm transition-all hover:border-primary hover:shadow-md">
-                <div className="text-4xl mb-4">🍽️</div>
-                <h2 className="text-2xl font-semibold text-foreground">
+            <Link
+              href="/orderout"
+              className="group rounded-xl border border-border bg-card p-6 shadow-sm transition-all hover:border-primary/50 hover:shadow-md hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+            >
+              <div className="text-4xl mb-3">🍽️</div>
+              <h2 className="text-lg font-medium text-foreground">
+                Order the right thing
+              </h2>
+              <p className="mt-1 text-sm text-muted-foreground">
+                Find food that matches your mood + diet near you.
+              </p>
+              <div className="mt-4">
+                <span className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow-sm transition-colors group-hover:bg-primary/90">
                   Order Out
-                </h2>
-                <p className="mt-2 text-muted-foreground">
-                  Find the perfect restaurant near you based on your mood and
-                  preferences.
-                </p>
+                </span>
               </div>
             </Link>
           </div>

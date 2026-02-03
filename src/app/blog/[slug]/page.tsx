@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
-import { Header } from '@/components/Header'
+import { SiteHeader } from '@/components/SiteHeader'
 import { getPostBySlug, getPostSlugs } from '@/lib/blog'
 
 export async function generateStaticParams() {
@@ -20,20 +20,20 @@ export default async function BlogPostPage({
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <Header />
+    <div className="min-h-screen bg-background">
+      <SiteHeader />
       <main className="mx-auto max-w-4xl px-4 py-16 sm:px-6 lg:px-8">
         <Link
           href="/blog"
-          className="mb-6 text-sm text-blue-600 hover:text-blue-800"
+          className="mb-6 text-sm text-primary hover:text-primary/80"
         >
           ← Back to Blog
         </Link>
         <article>
-          <h1 className="text-4xl font-bold tracking-tight text-gray-900">
+          <h1 className="text-4xl font-bold tracking-tight text-foreground">
             {post.title}
           </h1>
-          <p className="mt-4 text-sm text-gray-500">
+          <p className="mt-4 text-sm text-muted-foreground">
             {new Date(post.date).toLocaleDateString()}
           </p>
           {post.tags.length > 0 && (
@@ -41,15 +41,15 @@ export default async function BlogPostPage({
               {post.tags.map((tag) => (
                 <span
                   key={tag}
-                  className="rounded-full bg-blue-100 px-3 py-1 text-sm text-blue-800"
+                  className="rounded-full bg-primary/10 px-3 py-1 text-sm text-primary"
                 >
                   {tag}
                 </span>
               ))}
             </div>
           )}
-          <div className="prose prose-lg mt-8 max-w-none">
-            <div className="whitespace-pre-wrap text-gray-700">
+          <div className="prose prose-lg mt-8 max-w-none dark:prose-invert">
+            <div className="whitespace-pre-wrap text-muted-foreground">
               {post.content}
             </div>
           </div>

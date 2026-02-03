@@ -3,8 +3,8 @@
 import { useSession } from 'next-auth/react'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { Header } from '@/components/Header'
-import { Button } from '@/components/Button'
+import { SiteHeader } from '@/components/SiteHeader'
+import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 
 interface RecipeRequest {
@@ -52,8 +52,8 @@ export default function DashboardPage() {
 
   if (status === 'loading' || loading) {
     return (
-      <div className="min-h-screen bg-gray-50">
-        <Header />
+      <div className="min-h-screen bg-background">
+        <SiteHeader />
         <main className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
           <div className="text-center">Loading...</div>
         </main>
@@ -66,21 +66,21 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <Header />
+    <div className="min-h-screen bg-background">
+      <SiteHeader />
       <main className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-        <h1 className="text-3xl font-bold tracking-tight text-gray-900">
+        <h1 className="text-3xl font-bold tracking-tight text-foreground">
           Dashboard
         </h1>
-        <p className="mt-2 text-gray-600">
+        <p className="mt-2 text-muted-foreground">
           Your recent recipe requests and restaurant searches.
         </p>
 
         {requests.length === 0 ? (
-          <div className="mt-8 rounded-lg bg-white p-8 text-center shadow-sm">
-            <p className="text-gray-600">
+          <div className="mt-8 rounded-lg bg-card p-8 text-center shadow-sm border border-border">
+            <p className="text-muted-foreground">
               You haven&apos;t made any requests yet. Get started by{' '}
-              <Link href="/start" className="text-blue-600 hover:text-blue-800">
+              <Link href="/start" className="text-primary hover:text-primary/80">
                 choosing what to have for dinner
               </Link>
               .
@@ -91,34 +91,34 @@ export default function DashboardPage() {
             {requests.map((request) => (
               <div
                 key={request.id}
-                className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm"
+                className="rounded-lg border border-border bg-card p-6 shadow-sm"
               >
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
                     <div className="flex items-center gap-2">
-                      <span className="rounded-full bg-blue-100 px-3 py-1 text-sm font-medium text-blue-800">
+                      <span className="rounded-full bg-primary/10 px-3 py-1 text-sm font-medium text-primary">
                         {request.type}
                       </span>
-                      <span className="text-sm text-gray-500">
+                      <span className="text-sm text-muted-foreground">
                         {new Date(request.createdAt).toLocaleDateString()}{' '}
                         {new Date(request.createdAt).toLocaleTimeString()}
                       </span>
                     </div>
                     <div className="mt-4">
                       {request.type === 'orderout' && (
-                        <div className="text-sm text-gray-600">
+                        <div className="text-sm text-muted-foreground">
                           <p>
-                            <strong>Zip Code:</strong>{' '}
+                            <strong className="text-foreground">Zip Code:</strong>{' '}
                             {request.inputJson.zipCode}
                           </p>
                           {request.inputJson.mood && (
                             <p>
-                              <strong>Mood:</strong> {request.inputJson.mood}
+                              <strong className="text-foreground">Mood:</strong> {request.inputJson.mood}
                             </p>
                           )}
                           {request.results.length > 0 && (
                             <p className="mt-2">
-                              <strong>Found:</strong>{' '}
+                              <strong className="text-foreground">Found:</strong>{' '}
                               {request.results[0].outputJson?.length || 0}{' '}
                               restaurants
                             </p>
@@ -127,14 +127,14 @@ export default function DashboardPage() {
                       )}
                       {(request.type === 'pantry' ||
                         request.type === 'grocery') && (
-                        <div className="text-sm text-gray-600">
+                        <div className="text-sm text-muted-foreground">
                           <p>
-                            <strong>Ingredients:</strong>{' '}
+                            <strong className="text-foreground">Ingredients:</strong>{' '}
                             {request.inputJson.ingredients?.join(', ')}
                           </p>
                           {request.results.length > 0 && (
                             <p className="mt-2">
-                              <strong>Generated:</strong>{' '}
+                              <strong className="text-foreground">Generated:</strong>{' '}
                               {request.results[0].outputJson?.length || 0}{' '}
                               recipes
                             </p>

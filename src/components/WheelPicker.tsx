@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useCallback, useRef } from 'react'
+import { useSession } from 'next-auth/react'
 import { Button } from './Button'
 
 const COUNT_OPTIONS = [4, 6, 8, 10] as const
@@ -54,6 +55,7 @@ function describeArc(cx: number, cy: number, r: number, startAngle: number, endA
 }
 
 export function WheelPicker() {
+  const { data: session, status } = useSession()
   const [count, setCount] = useState<CountOption>(4)
   const [places, setPlaces] = useState<string[]>(Array(4).fill(''))
   const [isSpinning, setIsSpinning] = useState(false)
@@ -62,6 +64,12 @@ export function WheelPicker() {
   const [rotation, setRotation] = useState(0)
   const [showWheel, setShowWheel] = useState(false)
   const spinTimeoutRef = useRef<NodeJS.Timeout | null>(null)
+  
+  // Save/load state
+  const [isSaving, setIsSaving] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+  const [saveMessage, setSaveMessage] = useState<string | null>(null)
+  const [hasSavedPreferences, setHasSavedPreferences] = useState(false)
 
   // Update places array when count changes
   useEffect(() => {
@@ -85,6 +93,108 @@ export function WheelPicker() {
       }
     }
   }, [])
+
+  // Load saved preferences when user is authenticated
+  useEffect(() => {
+    if (status === 'authenticated') {
+      loadSavedPreferences()
+    }
+  }, [status])
+
+  // Clear save message after 3 seconds
+  useEffect(() => {
+    if (saveMessage) {
+      const timeout = setTimeout(() => setSaveMessage(null), 3000)
+      return () => clearTimeout(timeout)
+    }
+  }, [saveMessage])
+
+  const loadSavedPreferences = async () => {
+    setIsLoading(true)
+    try {
+      const response = await fetch('/api/wheel/preferences')
+      if (response.ok) {
+        const data = await response.json()
+        if (data.places && data.places.length > 0) {
+          // Determine count based on saved places
+          const savedCount = data.places.length
+          const validCount = COUNT_OPTIONS.includes(savedCount as CountOption) 
+            ? savedCount as CountOption 
+            : COUNT_OPTIONS.find(c => c >= savedCount) || 10
+          
+          setCount(validCount)
+          // Pad or trim to match count
+          const paddedPlaces = [...data.places]
+          while (paddedPlaces.length < validCount) {
+            paddedPlaces.push('')
+          }
+          setPlaces(paddedPlaces.slice(0, validCount))
+          setHasSavedPreferences(true)
+        }
+      }
+    } catch (error) {
+      console.error('Failed to load preferences:', error)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const handleSave = async () => {
+    const validPlaces = getValidPlaces()
+    if (validPlaces.length < 2) {
+      setError('Add at least 2 places to save.')
+      return
+    }
+
+    setIsSaving(true)
+    setError(null)
+    try {
+      const response = await fetch('/api/wheel/preferences', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ places: validPlaces }),
+      })
+
+      if (response.ok) {
+        setSaveMessage('Saved!')
+        setHasSavedPreferences(true)
+      } else {
+        const data = await response.json()
+        setError(data.error || 'Failed to save')
+      }
+    } catch (error) {
+      setError('Failed to save preferences')
+    } finally {
+      setIsSaving(false)
+    }
+  }
+
+  const handleClearAll = () => {
+    setPlaces(Array(count).fill(''))
+    setWinner(null)
+    setShowWheel(false)
+    setRotation(0)
+    setError(null)
+  }
+
+  const handleClearSaved = async () => {
+    setIsSaving(true)
+    try {
+      const response = await fetch('/api/wheel/preferences', {
+        method: 'DELETE',
+      })
+
+      if (response.ok) {
+        setSaveMessage('Cleared saved preferences!')
+        setHasSavedPreferences(false)
+        handleClearAll()
+      }
+    } catch (error) {
+      setError('Failed to clear saved preferences')
+    } finally {
+      setIsSaving(false)
+    }
+  }
 
   const updatePlace = (index: number, value: string) => {
     setPlaces((prev) => {
@@ -210,9 +320,57 @@ export function WheelPicker() {
             />
           ))}
         </div>
-        <p className="mt-3 text-xs text-muted-foreground">
-          For now, you&apos;ll type these each time. Later you&apos;ll be able to save favorites when you&apos;re signed in.
-        </p>
+        {/* Save/Clear Actions */}
+        {status === 'authenticated' ? (
+          <div className="mt-4 flex flex-wrap gap-2">
+            <Button
+              onClick={handleSave}
+              disabled={isSaving || isSpinning || getValidPlaces().length < 2}
+              variant="outline"
+              size="sm"
+              className="flex-1"
+            >
+              {isSaving ? 'Saving…' : hasSavedPreferences ? 'Update Saved' : 'Save Preferences'}
+            </Button>
+            {hasSavedPreferences && (
+              <Button
+                onClick={handleClearSaved}
+                disabled={isSaving || isSpinning}
+                variant="outline"
+                size="sm"
+                className="text-destructive hover:bg-destructive/10"
+              >
+                Clear Saved
+              </Button>
+            )}
+            <Button
+              onClick={handleClearAll}
+              disabled={isSpinning}
+              variant="outline"
+              size="sm"
+            >
+              Clear All
+            </Button>
+          </div>
+        ) : (
+          <p className="mt-3 text-xs text-muted-foreground">
+            Sign in to save your favorite places for next time.
+          </p>
+        )}
+        
+        {/* Save Message */}
+        {saveMessage && (
+          <div className="mt-3 rounded-lg bg-primary/10 px-3 py-2 text-sm text-primary animate-in fade-in duration-200">
+            ✓ {saveMessage}
+          </div>
+        )}
+        
+        {/* Loading State */}
+        {isLoading && (
+          <div className="mt-3 text-sm text-muted-foreground">
+            Loading your saved places…
+          </div>
+        )}
       </div>
 
       {/* Error Message */}

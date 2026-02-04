@@ -48,6 +48,7 @@ model User {
   accounts      Account[]
   sessions      Session[]
   recipeRequests RecipeRequest[]
+  savedWheel    SavedWheel?
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 }
@@ -97,4 +98,14 @@ model DirectoryRecipe {
   stepsJson      Json
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
+}
+
+// Saved wheel preferences for Spin the Wheel feature
+model SavedWheel {
+  id        String   @id @default(cuid())
+  userId    String   @unique  // One saved wheel per user
+  places    String[] // Array of place names
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

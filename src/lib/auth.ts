@@ -1,13 +1,13 @@
-import NextAuth, { type NextAuthConfig } from 'next-auth'
+import NextAuth from 'next-auth'
 import { PrismaAdapter } from '@auth/prisma-adapter'
-import GoogleProvider from 'next-auth/providers/google'
+import Google from 'next-auth/providers/google'
 import { prisma } from './db'
 
-export const authConfig: NextAuthConfig = {
+export const authConfig = {
   trustHost: true,
-  adapter: PrismaAdapter(prisma) as any,
+  adapter: PrismaAdapter(prisma),
   providers: [
-    GoogleProvider({
+    Google({
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
     }),

@@ -34,7 +34,7 @@ export default function Home() {
             {/* Cook Card */}
             <Link
               href="/cook"
-              className="group rounded-xl border border-border bg-card p-6 text-left shadow-sm transition-all hover:border-primary/50 hover:shadow-md hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+              className="group rounded-xl border border-border bg-card p-6 text-center shadow-sm transition-all hover:border-primary/50 hover:shadow-md hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
             >
               <div className="text-4xl mb-3">👨‍🍳</div>
               <h2 className="text-lg font-medium text-foreground">
@@ -53,7 +53,7 @@ export default function Home() {
             {/* Order Out Card */}
             <Link
               href="/orderout"
-              className="group rounded-xl border border-border bg-card p-6 text-left shadow-sm transition-all hover:border-primary/50 hover:shadow-md hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+              className="group rounded-xl border border-border bg-card p-6 text-center shadow-sm transition-all hover:border-primary/50 hover:shadow-md hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
             >
               <div className="text-4xl mb-3">🍽️</div>
               <h2 className="text-lg font-medium text-foreground">
@@ -72,7 +72,7 @@ export default function Home() {
             {/* Spin the Wheel Card */}
             <Link
               href="/wheel"
-              className="group rounded-xl border border-border bg-card p-6 text-left shadow-sm transition-all hover:border-primary/50 hover:shadow-md hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 sm:col-span-2 lg:col-span-1"
+              className="group rounded-xl border border-border bg-card p-6 text-center shadow-sm transition-all hover:border-primary/50 hover:shadow-md hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 sm:col-span-2 lg:col-span-1"
             >
               <div className="text-4xl mb-3">🎡</div>
               <h2 className="text-lg font-medium text-foreground">

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { Prisma } from '@prisma/client'
-import { auth } from '@/lib/auth'
+import { getServerSession } from 'next-auth'
+import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/db'
 import { getRecipeProvider } from '@/lib/recipeProviders/mockProvider'
 import { rateLimit } from '@/lib/rateLimit'
@@ -56,7 +57,7 @@ export async function POST(request: NextRequest) {
     const recipes = await provider.generateRecipes(validatedData)
 
     // Get session for saving to DB
-    const session = await auth()
+    const session = await getServerSession(authOptions)
     const userId = session?.user?.id
 
     // Save to database if user is logged in

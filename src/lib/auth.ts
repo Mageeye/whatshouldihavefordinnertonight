@@ -13,7 +13,7 @@ export const authConfig = {
     }),
   ],
   callbacks: {
-    session: async ({ session, user }) => {
+    session: async ({ session, user }: { session: any; user: any }) => {
       if (session.user) {
         session.user.id = user.id
       }

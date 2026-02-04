@@ -1,6 +1,6 @@
 'use client'
 
-import { useSession } from 'next-auth/react'
+import { useSession, signOut } from 'next-auth/react'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { SiteHeader } from '@/components/SiteHeader'
@@ -24,6 +24,10 @@ export default function DashboardPage() {
   const router = useRouter()
   const [requests, setRequests] = useState<RecipeRequest[]>([])
   const [loading, setLoading] = useState(true)
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
+  const [deleteConfirmText, setDeleteConfirmText] = useState('')
+  const [isDeleting, setIsDeleting] = useState(false)
+  const [deleteError, setDeleteError] = useState<string | null>(null)
 
   useEffect(() => {
     if (status === 'unauthenticated') {
@@ -47,6 +51,34 @@ export default function DashboardPage() {
       console.error('Failed to fetch requests:', error)
     } finally {
       setLoading(false)
+    }
+  }
+
+  const handleDeleteAccount = async () => {
+    if (deleteConfirmText !== 'DELETE') {
+      setDeleteError('Please type DELETE to confirm')
+      return
+    }
+
+    setIsDeleting(true)
+    setDeleteError(null)
+
+    try {
+      const response = await fetch('/api/account/delete', {
+        method: 'DELETE',
+      })
+
+      if (response.ok) {
+        // Sign out and redirect to home
+        await signOut({ callbackUrl: '/' })
+      } else {
+        const data = await response.json()
+        setDeleteError(data.error || 'Failed to delete account')
+      }
+    } catch (error) {
+      setDeleteError('Something went wrong. Please try again.')
+    } finally {
+      setIsDeleting(false)
     }
   }
 
@@ -148,6 +180,72 @@ export default function DashboardPage() {
             ))}
           </div>
         )}
+
+        {/* Account Settings Section */}
+        <div className="mt-16 border-t border-border pt-8">
+          <h2 className="text-xl font-semibold text-foreground">Account Settings</h2>
+          
+          <div className="mt-6 rounded-lg border border-destructive/30 bg-destructive/5 p-6">
+            <h3 className="text-lg font-medium text-destructive">Danger Zone</h3>
+            <p className="mt-2 text-sm text-muted-foreground">
+              Permanently delete your account and all associated data. This action cannot be undone.
+            </p>
+            
+            {!showDeleteConfirm ? (
+              <Button
+                onClick={() => setShowDeleteConfirm(true)}
+                variant="outline"
+                className="mt-4 border-destructive text-destructive hover:bg-destructive hover:text-destructive-foreground"
+              >
+                Delete My Account
+              </Button>
+            ) : (
+              <div className="mt-4 space-y-4">
+                <div className="rounded-lg bg-destructive/10 p-4">
+                  <p className="text-sm font-medium text-destructive">
+                    Are you absolutely sure?
+                  </p>
+                  <p className="mt-1 text-sm text-muted-foreground">
+                    This will permanently delete your account, saved preferences, and all history. 
+                    Type <strong>DELETE</strong> to confirm.
+                  </p>
+                </div>
+                
+                <input
+                  type="text"
+                  value={deleteConfirmText}
+                  onChange={(e) => setDeleteConfirmText(e.target.value)}
+                  placeholder="Type DELETE to confirm"
+                  className="block w-full max-w-xs rounded-md border border-border bg-background px-3 py-2 text-foreground placeholder:text-muted-foreground focus:border-destructive focus:outline-none focus:ring-1 focus:ring-destructive"
+                />
+                
+                {deleteError && (
+                  <p className="text-sm text-destructive">{deleteError}</p>
+                )}
+                
+                <div className="flex gap-3">
+                  <Button
+                    onClick={handleDeleteAccount}
+                    disabled={isDeleting || deleteConfirmText !== 'DELETE'}
+                    className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                  >
+                    {isDeleting ? 'Deleting...' : 'Permanently Delete Account'}
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      setShowDeleteConfirm(false)
+                      setDeleteConfirmText('')
+                      setDeleteError(null)
+                    }}
+                    variant="outline"
+                  >
+                    Cancel
+                  </Button>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
       </main>
     </div>
   )

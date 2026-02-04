@@ -1,9 +1,11 @@
 import NextAuth from 'next-auth'
-import { PrismaAdapter } from '@auth/prisma-adapter'
 import Google from 'next-auth/providers/google'
-import { prisma } from './db'
+import { PrismaAdapter } from '@auth/prisma-adapter'
+import { PrismaClient } from '@prisma/client'
 
-export const authConfig = {
+const prisma = new PrismaClient()
+
+export const { handlers, auth, signIn, signOut } = NextAuth({
   trustHost: true,
   adapter: PrismaAdapter(prisma),
   providers: [
@@ -13,7 +15,7 @@ export const authConfig = {
     }),
   ],
   callbacks: {
-    session: async ({ session, user }: { session: any; user: any }) => {
+    session({ session, user }) {
       if (session.user) {
         session.user.id = user.id
       }
@@ -23,6 +25,4 @@ export const authConfig = {
   pages: {
     signIn: '/',
   },
-}
-
-export const { handlers, auth } = NextAuth(authConfig)
+})

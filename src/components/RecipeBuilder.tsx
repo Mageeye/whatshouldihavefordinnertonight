@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { useSession } from 'next-auth/react'
 import { Button } from './Button'
 import { Recipe } from '@/lib/recipeProviders/provider'
 
@@ -56,6 +57,7 @@ const APPLIANCES = [
 ]
 
 export function RecipeBuilder({ type }: RecipeBuilderProps) {
+  const { data: session } = useSession()
   const [ingredients, setIngredients] = useState<string[]>([])
   const [ingredientInput, setIngredientInput] = useState('')
   const [dietaryRequirements, setDietaryRequirements] = useState<string[]>([])
@@ -77,6 +79,42 @@ export function RecipeBuilder({ type }: RecipeBuilderProps) {
   const [recipes, setRecipes] = useState<Recipe[]>([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  
+  // Save recipe state
+  const [savingRecipeId, setSavingRecipeId] = useState<string | null>(null)
+  const [savedRecipeIds, setSavedRecipeIds] = useState<Set<string>>(new Set())
+
+  const handleSaveRecipe = async (recipe: Recipe) => {
+    if (!session) return
+    
+    setSavingRecipeId(recipe.id)
+    try {
+      const response = await fetch('/api/recipes/saved', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          title: recipe.title,
+          description: recipe.description,
+          ingredients: recipe.ingredients,
+          instructions: recipe.instructions,
+          prepTime: recipe.prepTime,
+          cookTime: recipe.cookTime,
+          servings: recipe.servings,
+          cuisine: recipe.cuisine,
+          difficulty: recipe.difficulty,
+          nutrition: recipe.nutrition,
+        }),
+      })
+
+      if (response.ok) {
+        setSavedRecipeIds(prev => new Set([...prev, recipe.id]))
+      }
+    } catch (error) {
+      console.error('Failed to save recipe:', error)
+    } finally {
+      setSavingRecipeId(null)
+    }
+  }
 
   const addIngredient = () => {
     const trimmed = ingredientInput.trim()
@@ -587,8 +625,8 @@ export function RecipeBuilder({ type }: RecipeBuilderProps) {
                       )}
                     </div>
                   )}
-                  <div className="mt-4">
-                    <details className="text-sm">
+                  <div className="mt-4 flex items-center justify-between">
+                    <details className="text-sm flex-1">
                       <summary className="cursor-pointer font-medium text-primary hover:text-primary/80">
                         View Recipe
                       </summary>
@@ -611,6 +649,23 @@ export function RecipeBuilder({ type }: RecipeBuilderProps) {
                         </div>
                       </div>
                     </details>
+                    {session && (
+                      <button
+                        onClick={() => handleSaveRecipe(recipe)}
+                        disabled={savingRecipeId === recipe.id || savedRecipeIds.has(recipe.id)}
+                        className={`ml-3 flex-shrink-0 rounded-lg px-3 py-1.5 text-xs font-medium transition-colors ${
+                          savedRecipeIds.has(recipe.id)
+                            ? 'bg-primary/10 text-primary'
+                            : 'bg-muted text-muted-foreground hover:bg-primary/10 hover:text-primary'
+                        } disabled:opacity-50`}
+                      >
+                        {savingRecipeId === recipe.id 
+                          ? 'Saving...' 
+                          : savedRecipeIds.has(recipe.id) 
+                            ? '✓ Saved' 
+                            : 'Save'}
+                      </button>
+                    )}
                   </div>
                 </div>
               ))}

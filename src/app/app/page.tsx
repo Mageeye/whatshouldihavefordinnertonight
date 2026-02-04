@@ -181,70 +181,52 @@ export default function DashboardPage() {
           </div>
         )}
 
-        {/* Account Settings Section */}
-        <div className="mt-16 border-t border-border pt-8">
-          <h2 className="text-xl font-semibold text-foreground">Account Settings</h2>
-          
-          <div className="mt-6 rounded-lg border border-destructive/30 bg-destructive/5 p-6">
-            <h3 className="text-lg font-medium text-destructive">Danger Zone</h3>
-            <p className="mt-2 text-sm text-muted-foreground">
-              Permanently delete your account and all associated data. This action cannot be undone.
-            </p>
-            
-            {!showDeleteConfirm ? (
-              <Button
-                onClick={() => setShowDeleteConfirm(true)}
-                variant="outline"
-                className="mt-4 border-destructive text-destructive hover:bg-destructive hover:text-destructive-foreground"
-              >
-                Delete My Account
-              </Button>
-            ) : (
-              <div className="mt-4 space-y-4">
-                <div className="rounded-lg bg-destructive/10 p-4">
-                  <p className="text-sm font-medium text-destructive">
-                    Are you absolutely sure?
-                  </p>
-                  <p className="mt-1 text-sm text-muted-foreground">
-                    This will permanently delete your account, saved preferences, and all history. 
-                    Type <strong>DELETE</strong> to confirm.
-                  </p>
-                </div>
-                
-                <input
-                  type="text"
-                  value={deleteConfirmText}
-                  onChange={(e) => setDeleteConfirmText(e.target.value)}
-                  placeholder="Type DELETE to confirm"
-                  className="block w-full max-w-xs rounded-md border border-border bg-background px-3 py-2 text-foreground placeholder:text-muted-foreground focus:border-destructive focus:outline-none focus:ring-1 focus:ring-destructive"
-                />
-                
-                {deleteError && (
-                  <p className="text-sm text-destructive">{deleteError}</p>
-                )}
-                
-                <div className="flex gap-3">
-                  <Button
-                    onClick={handleDeleteAccount}
-                    disabled={isDeleting || deleteConfirmText !== 'DELETE'}
-                    className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-                  >
-                    {isDeleting ? 'Deleting...' : 'Permanently Delete Account'}
-                  </Button>
-                  <Button
-                    onClick={() => {
-                      setShowDeleteConfirm(false)
-                      setDeleteConfirmText('')
-                      setDeleteError(null)
-                    }}
-                    variant="outline"
-                  >
-                    Cancel
-                  </Button>
-                </div>
+        {/* Account Section - subtle at bottom */}
+        <div className="mt-16 pt-8 border-t border-border">
+          {!showDeleteConfirm ? (
+            <button
+              onClick={() => setShowDeleteConfirm(true)}
+              className="text-xs text-muted-foreground hover:text-destructive transition-colors"
+            >
+              Delete my account
+            </button>
+          ) : (
+            <div className="max-w-sm space-y-3">
+              <p className="text-xs text-muted-foreground">
+                This will permanently delete your account and all data. Type <strong>DELETE</strong> to confirm.
+              </p>
+              <input
+                type="text"
+                value={deleteConfirmText}
+                onChange={(e) => setDeleteConfirmText(e.target.value)}
+                placeholder="Type DELETE"
+                className="block w-full rounded-md border border-border bg-background px-3 py-1.5 text-sm text-foreground placeholder:text-muted-foreground focus:border-destructive focus:outline-none"
+              />
+              {deleteError && (
+                <p className="text-xs text-destructive">{deleteError}</p>
+              )}
+              <div className="flex gap-2">
+                <button
+                  onClick={handleDeleteAccount}
+                  disabled={isDeleting || deleteConfirmText !== 'DELETE'}
+                  className="text-xs text-destructive hover:text-destructive/80 disabled:opacity-50"
+                >
+                  {isDeleting ? 'Deleting...' : 'Confirm delete'}
+                </button>
+                <span className="text-xs text-muted-foreground">·</span>
+                <button
+                  onClick={() => {
+                    setShowDeleteConfirm(false)
+                    setDeleteConfirmText('')
+                    setDeleteError(null)
+                  }}
+                  className="text-xs text-muted-foreground hover:text-foreground"
+                >
+                  Cancel
+                </button>
               </div>
-            )}
-          </div>
+            </div>
+          )}
         </div>
       </main>
     </div>

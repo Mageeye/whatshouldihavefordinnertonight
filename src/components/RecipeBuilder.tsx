@@ -1,7 +1,8 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { useSession } from 'next-auth/react'
+import html2canvas from 'html2canvas'
 import { Button } from './Button'
 import { Recipe } from '@/lib/recipeProviders/provider'
 
@@ -83,6 +84,46 @@ export function RecipeBuilder({ type }: RecipeBuilderProps) {
   // Save recipe state
   const [savingRecipeId, setSavingRecipeId] = useState<string | null>(null)
   const [savedRecipeIds, setSavedRecipeIds] = useState<Set<string>>(new Set())
+  
+  // Download state
+  const [downloadingRecipeId, setDownloadingRecipeId] = useState<string | null>(null)
+  const recipeCardRefs = useRef<Map<string, HTMLDivElement>>(new Map())
+
+  const handleDownloadRecipe = async (recipe: Recipe) => {
+    const cardElement = recipeCardRefs.current.get(recipe.id)
+    if (!cardElement) return
+
+    setDownloadingRecipeId(recipe.id)
+    try {
+      // Temporarily expand the details if closed
+      const details = cardElement.querySelector('details')
+      const wasOpen = details?.open
+      if (details) details.open = true
+
+      // Wait a tick for DOM to update
+      await new Promise(resolve => setTimeout(resolve, 100))
+
+      const canvas = await html2canvas(cardElement, {
+        backgroundColor: '#ffffff',
+        scale: 2, // Higher quality
+        logging: false,
+        useCORS: true,
+      })
+
+      // Restore details state
+      if (details && !wasOpen) details.open = false
+
+      // Download the image
+      const link = document.createElement('a')
+      link.download = `${recipe.title.replace(/[^a-z0-9]/gi, '-').toLowerCase()}-recipe.png`
+      link.href = canvas.toDataURL('image/png')
+      link.click()
+    } catch (error) {
+      console.error('Failed to download recipe:', error)
+    } finally {
+      setDownloadingRecipeId(null)
+    }
+  }
 
   const handleSaveRecipe = async (recipe: Recipe) => {
     if (!session) return
@@ -591,7 +632,10 @@ export function RecipeBuilder({ type }: RecipeBuilderProps) {
               {recipes.map((recipe) => (
                 <div
                   key={recipe.id}
-                  className="rounded-lg border border-border p-4 transition-colors hover:bg-muted/50"
+                  ref={(el) => {
+                    if (el) recipeCardRefs.current.set(recipe.id, el)
+                  }}
+                  className="rounded-lg border border-border bg-card p-4 transition-colors hover:bg-muted/50"
                 >
                   <h3 className="text-base font-semibold text-foreground">
                     {recipe.title}
@@ -649,11 +693,22 @@ export function RecipeBuilder({ type }: RecipeBuilderProps) {
                         </div>
                       </div>
                     </details>
+                  </div>
+                  
+                  {/* Action buttons */}
+                  <div className="mt-3 flex items-center gap-2 border-t border-border pt-3">
+                    <button
+                      onClick={() => handleDownloadRecipe(recipe)}
+                      disabled={downloadingRecipeId === recipe.id}
+                      className="rounded-lg bg-muted px-3 py-1.5 text-xs font-medium text-muted-foreground hover:bg-muted/80 hover:text-foreground transition-colors disabled:opacity-50"
+                    >
+                      {downloadingRecipeId === recipe.id ? 'Downloading...' : '📥 Download'}
+                    </button>
                     {session && (
                       <button
                         onClick={() => handleSaveRecipe(recipe)}
                         disabled={savingRecipeId === recipe.id || savedRecipeIds.has(recipe.id)}
-                        className={`ml-3 flex-shrink-0 rounded-lg px-3 py-1.5 text-xs font-medium transition-colors ${
+                        className={`rounded-lg px-3 py-1.5 text-xs font-medium transition-colors ${
                           savedRecipeIds.has(recipe.id)
                             ? 'bg-primary/10 text-primary'
                             : 'bg-muted text-muted-foreground hover:bg-primary/10 hover:text-primary'
@@ -663,7 +718,7 @@ export function RecipeBuilder({ type }: RecipeBuilderProps) {
                           ? 'Saving...' 
                           : savedRecipeIds.has(recipe.id) 
                             ? '✓ Saved' 
-                            : 'Save'}
+                            : '💾 Save'}
                       </button>
                     )}
                   </div>

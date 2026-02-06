@@ -169,7 +169,7 @@ export default function TermsPage() {
             <h2 className="text-xl font-semibold text-foreground mb-4">Contact</h2>
             <p className="text-muted-foreground mb-4">
               For questions about these Terms of Service, contact us at:
-              legal@dinnerdecisionmaker.com
+              lathan@mageeyemedia.com
             </p>
           </section>
         </div>

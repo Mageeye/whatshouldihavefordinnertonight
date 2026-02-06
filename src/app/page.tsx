@@ -90,6 +90,20 @@ export default function Home() {
           </div>
         </div>
       </main>
+
+      {/* Footer */}
+      <footer className="border-t border-border py-8 mt-8">
+        <div className="mx-auto max-w-5xl px-4 md:px-6 flex flex-col sm:flex-row justify-between items-center gap-4 text-sm text-muted-foreground">
+          <div className="flex gap-6">
+            <Link href="/recipes" className="hover:text-foreground">Recipes</Link>
+            <Link href="/blog" className="hover:text-foreground">Blog</Link>
+          </div>
+          <div className="flex gap-6">
+            <Link href="/privacy" className="hover:text-foreground">Privacy</Link>
+            <Link href="/terms" className="hover:text-foreground">Terms</Link>
+          </div>
+        </div>
+      </footer>
     </div>
   )
 }

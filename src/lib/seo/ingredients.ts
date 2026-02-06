@@ -466,6 +466,87 @@ export function getPageBySlug(slug: string) {
   return null
 }
 
+// Map diet slugs to RecipeBuilder dietary option names
+export const dietSlugToOption: Record<string, string> = {
+  'keto-dinner-ideas': 'Keto',
+  'low-carb-dinners': 'Low Carb',
+  'high-protein-meals': 'High Protein',
+  'vegetarian-dinners': 'Vegetarian',
+  'gluten-free-dinners': 'Gluten-Free',
+  'dairy-free-dinners': 'Dairy-Free',
+}
+
+// Map appliance slugs to RecipeBuilder appliance option names
+export const applianceSlugToOption: Record<string, string> = {
+  'air-fryer-recipes': 'Air fryer',
+  'instant-pot-recipes': 'Instant Pot',
+  'slow-cooker-recipes': 'Slow Cooker',
+  'sheet-pan-dinners': 'Oven',
+  'one-pot-meals': 'Stove',
+  'skillet-dinners': 'Stove',
+}
+
+// Map time slugs to RecipeBuilder time option values
+export const timeSlugToOption: Record<string, string> = {
+  '15-minute-meals': '15 min',
+  '20-minute-meals': '30 min', // closest match
+  '30-minute-meals': '30 min',
+  '5-ingredient-dinners': '30 min',
+}
+
+// Get suggested ingredients for diet pages
+export function getSuggestedIngredientsForDiet(slug: string): string[] {
+  switch (slug) {
+    case 'keto-dinner-ideas':
+    case 'low-carb-dinners':
+      return ['chicken breast', 'ground beef', 'bacon', 'eggs', 'cheese', 'broccoli', 'salmon', 'avocado', 'spinach', 'cauliflower']
+    case 'high-protein-meals':
+      return ['chicken breast', 'ground beef', 'eggs', 'salmon', 'ground turkey', 'tuna', 'shrimp', 'tofu', 'greek yogurt', 'cottage cheese']
+    case 'vegetarian-dinners':
+      return ['eggs', 'cheese', 'tofu', 'black beans', 'chickpeas', 'lentils', 'pasta', 'rice', 'broccoli', 'mushrooms']
+    case 'gluten-free-dinners':
+      return ['chicken breast', 'rice', 'potatoes', 'eggs', 'salmon', 'ground beef', 'quinoa', 'corn tortillas', 'vegetables', 'beans']
+    case 'dairy-free-dinners':
+      return ['chicken breast', 'ground beef', 'rice', 'pasta', 'coconut milk', 'olive oil', 'vegetables', 'beans', 'tofu', 'salmon']
+    default:
+      return []
+  }
+}
+
+// Get suggested ingredients for appliance pages
+export function getSuggestedIngredientsForAppliance(slug: string): string[] {
+  switch (slug) {
+    case 'air-fryer-recipes':
+      return ['chicken breast', 'pork chops', 'potatoes', 'broccoli', 'salmon', 'shrimp', 'bacon', 'vegetables', 'tofu', 'cauliflower']
+    case 'instant-pot-recipes':
+      return ['chicken breast', 'beef stew meat', 'rice', 'beans', 'potatoes', 'chicken broth', 'pork', 'lentils', 'vegetables', 'pasta']
+    case 'slow-cooker-recipes':
+      return ['beef stew meat', 'chicken', 'pork', 'beans', 'potatoes', 'carrots', 'onions', 'chicken broth', 'tomatoes', 'peppers']
+    case 'sheet-pan-dinners':
+      return ['chicken breast', 'sausage', 'potatoes', 'broccoli', 'salmon', 'vegetables', 'shrimp', 'pork chops', 'sweet potato', 'peppers']
+    case 'one-pot-meals':
+    case 'skillet-dinners':
+      return ['ground beef', 'pasta', 'rice', 'chicken', 'sausage', 'onions', 'tomatoes', 'beans', 'vegetables', 'cheese']
+    default:
+      return []
+  }
+}
+
+// Get suggested ingredients for time pages
+export function getSuggestedIngredientsForTime(slug: string): string[] {
+  switch (slug) {
+    case '15-minute-meals':
+      return ['eggs', 'pasta', 'shrimp', 'canned tuna', 'tortillas', 'cheese', 'rotisserie chicken', 'frozen vegetables', 'bacon', 'bread']
+    case '20-minute-meals':
+    case '30-minute-meals':
+      return ['chicken breast', 'ground beef', 'pasta', 'rice', 'eggs', 'vegetables', 'sausage', 'shrimp', 'potatoes', 'beans']
+    case '5-ingredient-dinners':
+      return ['chicken breast', 'pasta', 'cheese', 'butter', 'garlic', 'eggs', 'bacon', 'rice', 'tomatoes', 'cream']
+    default:
+      return []
+  }
+}
+
 // Get related pages for internal linking
 export function getRelatedPages(slug: string, limit = 5) {
   const page = getPageBySlug(slug)

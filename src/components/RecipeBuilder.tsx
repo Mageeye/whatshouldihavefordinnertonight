@@ -8,6 +8,18 @@ import { Recipe } from '@/lib/recipeProviders/provider'
 
 interface RecipeBuilderProps {
   type: 'pantry' | 'grocery'
+  /** Pre-populate ingredients (e.g., for ingredient pSEO pages) */
+  initialIngredients?: string[]
+  /** Pre-select dietary requirements (e.g., for diet pSEO pages) */
+  initialDietaryRequirements?: string[]
+  /** Pre-select appliances (e.g., for appliance pSEO pages) */
+  initialAppliances?: string[]
+  /** Pre-select time available (e.g., for time constraint pSEO pages) */
+  initialTimeAvailable?: string
+  /** Custom quick-add ingredients to show (replaces default QUICK_INGREDIENTS) */
+  suggestedIngredients?: string[]
+  /** Hide the page title/header area (used when embedded in pSEO pages) */
+  compact?: boolean
 }
 
 const DIETARY_OPTIONS = [
@@ -57,17 +69,25 @@ const APPLIANCES = [
   'Grill',
 ]
 
-export function RecipeBuilder({ type }: RecipeBuilderProps) {
+export function RecipeBuilder({ 
+  type,
+  initialIngredients = [],
+  initialDietaryRequirements = [],
+  initialAppliances = [],
+  initialTimeAvailable = '',
+  suggestedIngredients,
+  compact = false,
+}: RecipeBuilderProps) {
   const { data: session } = useSession()
-  const [ingredients, setIngredients] = useState<string[]>([])
+  const [ingredients, setIngredients] = useState<string[]>(initialIngredients)
   const [ingredientInput, setIngredientInput] = useState('')
-  const [dietaryRequirements, setDietaryRequirements] = useState<string[]>([])
+  const [dietaryRequirements, setDietaryRequirements] = useState<string[]>(initialDietaryRequirements)
   const [allergies, setAllergies] = useState<string[]>([])
   const [mealType, setMealType] = useState('')
-  const [timeAvailable, setTimeAvailable] = useState('')
+  const [timeAvailable, setTimeAvailable] = useState(initialTimeAvailable)
   const [skillLevel, setSkillLevel] = useState('')
   const [cuisine, setCuisine] = useState('')
-  const [appliances, setAppliances] = useState<string[]>([])
+  const [appliances, setAppliances] = useState<string[]>(initialAppliances)
   const [macroTargetsEnabled, setMacroTargetsEnabled] = useState(false)
   const [calories, setCalories] = useState('')
   const [protein, setProtein] = useState('')
@@ -307,17 +327,22 @@ export function RecipeBuilder({ type }: RecipeBuilderProps) {
             <div className="mt-4">
               <p className="text-sm text-muted-foreground">Popular adds:</p>
               <div className="mt-2 flex flex-wrap gap-2">
-                {QUICK_INGREDIENTS.map((ing) => (
+                {(suggestedIngredients || QUICK_INGREDIENTS).map((ing) => (
                   <button
                     key={ing}
                     onClick={() => {
-                      if (!ingredients.includes(ing)) {
-                        setIngredients([...ingredients, ing])
+                      if (!ingredients.includes(ing.toLowerCase())) {
+                        setIngredients([...ingredients, ing.toLowerCase()])
                       }
                     }}
-                    className="rounded-lg border border-border bg-card px-3 py-1.5 text-sm text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
+                    disabled={ingredients.includes(ing.toLowerCase())}
+                    className={`rounded-lg border border-border px-3 py-1.5 text-sm transition-colors ${
+                      ingredients.includes(ing.toLowerCase())
+                        ? 'bg-primary/10 text-primary cursor-default'
+                        : 'bg-card text-muted-foreground hover:bg-muted hover:text-foreground'
+                    }`}
                   >
-                    + {ing}
+                    {ingredients.includes(ing.toLowerCase()) ? '✓' : '+'} {ing}
                   </button>
                 ))}
               </div>

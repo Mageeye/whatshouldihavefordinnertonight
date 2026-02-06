@@ -194,7 +194,7 @@ export default function PrivacyPage() {
             <h2 className="text-xl font-semibold text-foreground mb-4">Contact Us</h2>
             <p className="text-muted-foreground mb-4">
               If you have questions about this privacy policy or our practices, please contact us
-              at: lathan@mageeyemedia.com
+              at: diane@mageeyemedia.com
             </p>
           </section>
         </div>

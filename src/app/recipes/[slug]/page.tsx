@@ -112,7 +112,6 @@ function IngredientPage({ ingredient }: { ingredient: Ingredient }) {
       {/* Embedded Recipe Builder */}
       <section>
         <RecipeBuilder 
-          type="pantry"
           initialIngredients={[ingredient.name.toLowerCase()]}
           suggestedIngredients={relatedIngredients}
           compact
@@ -200,7 +199,6 @@ function ComboPage({ combo }: { combo: IngredientCombo }) {
       {/* Embedded Recipe Builder */}
       <section>
         <RecipeBuilder 
-          type="pantry"
           initialIngredients={initialIngredients}
           suggestedIngredients={relatedIngredients}
           compact
@@ -274,7 +272,6 @@ function DietPage({ page }: { page: ConstraintPage }) {
       {/* Embedded Recipe Builder with diet pre-selected */}
       <section>
         <RecipeBuilder 
-          type="pantry"
           initialDietaryRequirements={dietOption ? [dietOption] : []}
           suggestedIngredients={suggestedIngredients}
           compact
@@ -340,7 +337,6 @@ function AppliancePage({ page }: { page: ConstraintPage }) {
       {/* Embedded Recipe Builder with appliance pre-selected */}
       <section>
         <RecipeBuilder 
-          type="pantry"
           initialAppliances={applianceOption ? [applianceOption] : []}
           suggestedIngredients={suggestedIngredients}
           compact
@@ -406,7 +402,6 @@ function TimePage({ page }: { page: ConstraintPage }) {
       {/* Embedded Recipe Builder with time pre-selected */}
       <section>
         <RecipeBuilder 
-          type="pantry"
           initialTimeAvailable={timeOption || ''}
           suggestedIngredients={suggestedIngredients}
           compact

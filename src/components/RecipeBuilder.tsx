@@ -7,7 +7,8 @@ import { Button } from './Button'
 import { Recipe } from '@/lib/recipeProviders/provider'
 
 interface RecipeBuilderProps {
-  type: 'pantry' | 'grocery'
+  /** Initial mode - defaults to 'pantry', user can toggle */
+  initialType?: 'pantry' | 'grocery'
   /** Pre-populate ingredients (e.g., for ingredient pSEO pages) */
   initialIngredients?: string[]
   /** Pre-select dietary requirements (e.g., for diet pSEO pages) */
@@ -70,7 +71,7 @@ const APPLIANCES = [
 ]
 
 export function RecipeBuilder({ 
-  type,
+  initialType = 'pantry',
   initialIngredients = [],
   initialDietaryRequirements = [],
   initialAppliances = [],
@@ -79,6 +80,7 @@ export function RecipeBuilder({
   compact = false,
 }: RecipeBuilderProps) {
   const { data: session } = useSession()
+  const [type, setType] = useState<'pantry' | 'grocery'>(initialType)
   const [ingredients, setIngredients] = useState<string[]>(initialIngredients)
   const [ingredientInput, setIngredientInput] = useState('')
   const [dietaryRequirements, setDietaryRequirements] = useState<string[]>(initialDietaryRequirements)
@@ -289,6 +291,39 @@ export function RecipeBuilder({
     <div className="mt-8 grid gap-8 lg:grid-cols-2">
       {/* Left Column - Form */}
       <div className="space-y-6">
+        {/* Mode Toggle */}
+        <div className="rounded-xl bg-card p-4 shadow-sm border border-border">
+          <div className="flex items-center justify-center gap-2">
+            <button
+              onClick={() => setType('pantry')}
+              className={`flex-1 flex items-center justify-center gap-2 rounded-lg px-4 py-3 text-sm font-medium transition-all ${
+                type === 'pantry'
+                  ? 'bg-primary text-primary-foreground shadow-sm'
+                  : 'bg-muted text-muted-foreground hover:bg-muted/80 hover:text-foreground'
+              }`}
+            >
+              <span>🥫</span>
+              <span>Use what I have</span>
+            </button>
+            <button
+              onClick={() => setType('grocery')}
+              className={`flex-1 flex items-center justify-center gap-2 rounded-lg px-4 py-3 text-sm font-medium transition-all ${
+                type === 'grocery'
+                  ? 'bg-primary text-primary-foreground shadow-sm'
+                  : 'bg-muted text-muted-foreground hover:bg-muted/80 hover:text-foreground'
+              }`}
+            >
+              <span>🛒</span>
+              <span>I can grab ingredients</span>
+            </button>
+          </div>
+          <p className="mt-2 text-center text-xs text-muted-foreground">
+            {type === 'pantry' 
+              ? 'Generate recipes from ingredients you already have'
+              : 'Get recipes + a shopping list that fits your budget'}
+          </p>
+        </div>
+
         <div className="rounded-xl bg-card p-6 shadow-sm border border-border">
           <h2 className="text-lg font-medium text-foreground">Ingredients</h2>
           <p className="mt-1 text-sm text-muted-foreground">

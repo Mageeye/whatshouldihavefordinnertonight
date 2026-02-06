@@ -10,7 +10,7 @@ export default function Home() {
         <div className="mx-auto max-w-4xl text-center">
           <div className="mb-8 flex justify-center">
             <Image
-              src="/logo/logo.png"
+              src="/logo/logo.webp"
               alt="Dinner Decision Maker logo"
               width={140}
               height={140}

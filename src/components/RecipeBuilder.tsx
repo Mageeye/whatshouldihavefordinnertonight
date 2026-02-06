@@ -2,7 +2,6 @@
 
 import { useState, useRef } from 'react'
 import { useSession } from 'next-auth/react'
-import html2canvas from 'html2canvas'
 import { Button } from './Button'
 import { Recipe } from '@/lib/recipeProviders/provider'
 
@@ -117,6 +116,9 @@ export function RecipeBuilder({
 
     setDownloadingRecipeId(recipe.id)
     try {
+      // Dynamically import html2canvas only when needed (saves ~500KB from main bundle)
+      const { default: html2canvas } = await import('html2canvas')
+      
       // Temporarily expand the details if closed
       const details = cardElement.querySelector('details')
       const wasOpen = details?.open

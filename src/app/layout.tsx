@@ -44,7 +44,7 @@ export const metadata: Metadata = {
       'Decide what to have for dinner in under 60 seconds. Generate recipes from pantry ingredients, find restaurants near you, or spin the wheel.',
     images: [
       {
-        url: '/logo/logo.png',
+        url: '/logo/logo.webp',
         width: 512,
         height: 512,
         alt: 'Dinner Decision Maker',
@@ -55,7 +55,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Dinner Decision Maker',
     description: 'Decide what to have for dinner in under 60 seconds.',
-    images: ['/logo/logo.png'],
+    images: ['/logo/logo.webp'],
   },
   robots: {
     index: true,
@@ -85,8 +85,8 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <link rel="icon" href="/logo/logo.png" />
-        <link rel="apple-touch-icon" href="/logo/logo.png" />
+        <link rel="icon" href="/logo/logo.webp" />
+        <link rel="apple-touch-icon" href="/logo/logo.webp" />
       </head>
       <body className={inter.className}>
         <GoogleAnalytics />

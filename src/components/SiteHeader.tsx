@@ -37,7 +37,7 @@ export function SiteHeader({ className }: { className?: string }) {
         <div className="flex items-center gap-3">
           <Link href="/" className="flex items-center gap-3">
             <Image
-              src="/logo/logo.png"
+              src="/logo/logo.webp"
               alt="Dinner Decision Maker logo"
               width={36}
               height={36}

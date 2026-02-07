@@ -15,10 +15,6 @@ const nextConfig = {
     removeConsole: process.env.NODE_ENV === 'production',
   },
 
-  // Experimental performance features
-  experimental: {
-    optimizeCss: true,
-  },
 
   // Redirect non-www to www (canonical URL)
   async redirects() {

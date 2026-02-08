@@ -133,3 +133,23 @@ model SavedRecipe {
 
   @@index([userId])
 }
+
+// Publicly shareable recipes (no auth required)
+model SharedRecipe {
+  id           String   @id @default(cuid())
+  title        String
+  description  String?  @db.Text
+  ingredients  String[]
+  instructions String[]
+  prepTime     Int?
+  cookTime     Int?
+  servings     Int?
+  cuisine      String?
+  difficulty   String?
+  calories     Int?
+  protein      Int?
+  carbs        Int?
+  fat          Int?
+  createdAt    DateTime @default(now())
+  createdBy    String?  // Optional - null for anonymous users
+}

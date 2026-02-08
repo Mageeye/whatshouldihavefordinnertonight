@@ -146,30 +146,50 @@ export function RecipeBuilder({
       const filename = `${recipe.title.replace(/[^a-z0-9]/gi, '-').toLowerCase()}-recipe.png`
       
       // Convert canvas to blob for sharing
-      const blob = await new Promise<Blob>((resolve) => {
-        canvas.toBlob((b) => resolve(b!), 'image/png')
+      const blob = await new Promise<Blob>((resolve, reject) => {
+        canvas.toBlob((b) => {
+          if (b) resolve(b)
+          else reject(new Error('Failed to create blob'))
+        }, 'image/png')
       })
 
-      // Check if Web Share API with file sharing is available (mobile)
-      const file = new File([blob], filename, { type: 'image/png' })
-      const shareData = { files: [file], title: recipe.title }
-      
-      if (navigator.canShare && navigator.canShare(shareData)) {
-        // Mobile: Use native share sheet (allows saving to Photos)
-        await navigator.share(shareData)
-      } else {
-        // Desktop: Traditional download
+      // Helper function to do a traditional download
+      const doDownload = () => {
         const link = document.createElement('a')
         link.download = filename
         link.href = URL.createObjectURL(blob)
+        document.body.appendChild(link)
         link.click()
+        document.body.removeChild(link)
         URL.revokeObjectURL(link.href)
       }
-    } catch (error) {
-      // User cancelled share or other error - don't log cancel errors
-      if (error instanceof Error && error.name !== 'AbortError') {
-        console.error('Failed to download recipe:', error)
+
+      // Try Web Share API with file sharing (mobile), fallback to download
+      let useShare = false
+      try {
+        if (typeof navigator !== 'undefined' && navigator.canShare) {
+          const file = new File([blob], filename, { type: 'image/png' })
+          const shareData = { files: [file], title: recipe.title }
+          if (navigator.canShare(shareData)) {
+            useShare = true
+            await navigator.share(shareData)
+          }
+        }
+      } catch (shareError) {
+        // If share was cancelled by user, that's fine - don't fallback to download
+        if (shareError instanceof Error && shareError.name === 'AbortError') {
+          return // User cancelled, do nothing
+        }
+        // For other share errors, fall back to download
+        useShare = false
       }
+
+      // If share wasn't used or available, do traditional download
+      if (!useShare) {
+        doDownload()
+      }
+    } catch (error) {
+      console.error('Failed to download recipe:', error)
     } finally {
       setDownloadingRecipeId(null)
     }

@@ -64,6 +64,12 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     alternates: {
       canonical: recipeUrl,
     },
+    // Prevent indexing of user-generated recipes to avoid SEO spam risk
+    // OG tags still work for social sharing previews
+    robots: {
+      index: false,
+      follow: true,
+    },
   }
 }
 

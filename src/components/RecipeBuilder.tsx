@@ -143,13 +143,33 @@ export function RecipeBuilder({
       // Restore details state
       if (details && !wasOpen) details.open = false
 
-      // Download the image
-      const link = document.createElement('a')
-      link.download = `${recipe.title.replace(/[^a-z0-9]/gi, '-').toLowerCase()}-recipe.png`
-      link.href = canvas.toDataURL('image/png')
-      link.click()
+      const filename = `${recipe.title.replace(/[^a-z0-9]/gi, '-').toLowerCase()}-recipe.png`
+      
+      // Convert canvas to blob for sharing
+      const blob = await new Promise<Blob>((resolve) => {
+        canvas.toBlob((b) => resolve(b!), 'image/png')
+      })
+
+      // Check if Web Share API with file sharing is available (mobile)
+      const file = new File([blob], filename, { type: 'image/png' })
+      const shareData = { files: [file], title: recipe.title }
+      
+      if (navigator.canShare && navigator.canShare(shareData)) {
+        // Mobile: Use native share sheet (allows saving to Photos)
+        await navigator.share(shareData)
+      } else {
+        // Desktop: Traditional download
+        const link = document.createElement('a')
+        link.download = filename
+        link.href = URL.createObjectURL(blob)
+        link.click()
+        URL.revokeObjectURL(link.href)
+      }
     } catch (error) {
-      console.error('Failed to download recipe:', error)
+      // User cancelled share or other error - don't log cancel errors
+      if (error instanceof Error && error.name !== 'AbortError') {
+        console.error('Failed to download recipe:', error)
+      }
     } finally {
       setDownloadingRecipeId(null)
     }

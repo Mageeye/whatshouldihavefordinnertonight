@@ -164,28 +164,37 @@ export function RecipeBuilder({
         URL.revokeObjectURL(link.href)
       }
 
-      // Try Web Share API with file sharing (mobile), fallback to download
-      let useShare = false
-      try {
-        if (typeof navigator !== 'undefined' && navigator.canShare) {
-          const file = new File([blob], filename, { type: 'image/png' })
-          const shareData = { files: [file], title: recipe.title }
-          if (navigator.canShare(shareData)) {
-            useShare = true
-            await navigator.share(shareData)
-          }
-        }
-      } catch (shareError) {
-        // If share was cancelled by user, that's fine - don't fallback to download
-        if (shareError instanceof Error && shareError.name === 'AbortError') {
-          return // User cancelled, do nothing
-        }
-        // For other share errors, fall back to download
-        useShare = false
-      }
+      // Check if we're on a mobile device
+      const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+        navigator.userAgent
+      )
 
-      // If share wasn't used or available, do traditional download
-      if (!useShare) {
+      // Only use Web Share API on mobile devices
+      if (isMobile) {
+        let shareSucceeded = false
+        try {
+          if (typeof navigator !== 'undefined' && navigator.canShare) {
+            const file = new File([blob], filename, { type: 'image/png' })
+            const shareData = { files: [file], title: recipe.title }
+            if (navigator.canShare(shareData)) {
+              await navigator.share(shareData)
+              shareSucceeded = true
+            }
+          }
+        } catch (shareError) {
+          // If share was cancelled by user, that's fine - don't fallback to download
+          if (shareError instanceof Error && shareError.name === 'AbortError') {
+            return // User cancelled, do nothing
+          }
+          // For other share errors, fall back to download
+        }
+
+        // If share wasn't available or failed, fall back to download
+        if (!shareSucceeded) {
+          doDownload()
+        }
+      } else {
+        // Desktop: Always use traditional download
         doDownload()
       }
     } catch (error) {

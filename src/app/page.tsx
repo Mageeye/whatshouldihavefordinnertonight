@@ -1,6 +1,8 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { SiteHeader } from '@/components/SiteHeader'
+import { RecipeBuilder } from '@/components/RecipeBuilder'
+import { SignInCallout } from '@/components/SignInCallout'
 
 export default function Home() {
   return (
@@ -87,6 +89,142 @@ export default function Home() {
                 </span>
               </div>
             </Link>
+          </div>
+
+          {/* Sign In Callout */}
+          <div className="mt-10">
+            <SignInCallout />
+          </div>
+
+          {/* Recipe Generator - Embedded */}
+          <div className="mt-12">
+            <h2 className="text-xl font-semibold text-foreground mb-2">
+              Generate Recipes Instantly
+            </h2>
+            <p className="text-muted-foreground mb-6">
+              Enter what you have, get personalized dinner ideas in seconds.
+            </p>
+            <RecipeBuilder compact />
+          </div>
+
+          {/* Popular Recipe Ideas - SEO Links */}
+          <div className="mt-16 text-left">
+            <h2 className="text-xl font-semibold text-foreground mb-6 text-center">
+              Popular Recipe Ideas
+            </h2>
+            
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {/* By Ingredient */}
+              <div>
+                <h3 className="text-sm font-medium text-muted-foreground uppercase tracking-wider mb-3">
+                  By Ingredient
+                </h3>
+                <ul className="space-y-2">
+                  <li>
+                    <Link href="/recipes/chicken-breast" className="text-foreground hover:text-primary transition-colors">
+                      Chicken Breast Recipes
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/recipes/ground-beef" className="text-foreground hover:text-primary transition-colors">
+                      Ground Beef Recipes
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/recipes/eggs" className="text-foreground hover:text-primary transition-colors">
+                      Egg Recipes
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/recipes/pasta" className="text-foreground hover:text-primary transition-colors">
+                      Pasta Recipes
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/recipes/rice" className="text-foreground hover:text-primary transition-colors">
+                      Rice Recipes
+                    </Link>
+                  </li>
+                </ul>
+              </div>
+
+              {/* Popular Combos */}
+              <div>
+                <h3 className="text-sm font-medium text-muted-foreground uppercase tracking-wider mb-3">
+                  Popular Combos
+                </h3>
+                <ul className="space-y-2">
+                  <li>
+                    <Link href="/recipes/chicken-breast-rice" className="text-foreground hover:text-primary transition-colors">
+                      Chicken and Rice
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/recipes/chicken-breast-broccoli" className="text-foreground hover:text-primary transition-colors">
+                      Chicken and Broccoli
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/recipes/ground-beef-potatoes" className="text-foreground hover:text-primary transition-colors">
+                      Ground Beef and Potatoes
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/recipes/chicken-breast-pasta" className="text-foreground hover:text-primary transition-colors">
+                      Chicken Pasta
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/recipes/sausage-pasta" className="text-foreground hover:text-primary transition-colors">
+                      Sausage Pasta
+                    </Link>
+                  </li>
+                </ul>
+              </div>
+
+              {/* By Constraint */}
+              <div>
+                <h3 className="text-sm font-medium text-muted-foreground uppercase tracking-wider mb-3">
+                  Quick & Easy
+                </h3>
+                <ul className="space-y-2">
+                  <li>
+                    <Link href="/recipes/15-minute-meals" className="text-foreground hover:text-primary transition-colors">
+                      15-Minute Meals
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/recipes/30-minute-dinners" className="text-foreground hover:text-primary transition-colors">
+                      30-Minute Dinners
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/recipes/air-fryer-recipes" className="text-foreground hover:text-primary transition-colors">
+                      Air Fryer Recipes
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/recipes/keto-dinner-ideas" className="text-foreground hover:text-primary transition-colors">
+                      Keto Dinner Ideas
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/recipes/one-pot-meals" className="text-foreground hover:text-primary transition-colors">
+                      One-Pot Meals
+                    </Link>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <div className="mt-6 text-center">
+              <Link 
+                href="/recipes" 
+                className="text-sm text-primary hover:text-primary/80 font-medium"
+              >
+                Browse all recipe ideas →
+              </Link>
+            </div>
           </div>
         </div>
       </main>

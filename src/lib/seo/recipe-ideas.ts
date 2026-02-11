@@ -1,6 +1,14 @@
 // Static recipe ideas for pSEO pages
 // These provide immediate value to users searching for recipe inspiration
 
+import { proteinRecipes1, proteinFaqs1 } from './recipes/protein-recipes-1'
+import { proteinRecipes2, proteinFaqs2 } from './recipes/protein-recipes-2'
+import { baseRecipes, baseFaqs } from './recipes/base-recipes'
+import { pantryRecipes, pantryFaqs } from './recipes/pantry-recipes'
+import { comboRecipesUpgrade, comboFaqsUpgrade } from './recipes/combo-recipes-upgrade'
+import { comboRecipesNew1, comboFaqsNew1 } from './recipes/combo-recipes-new-1'
+import { comboRecipesNew2, comboFaqsNew2 } from './recipes/combo-recipes-new-2'
+
 export interface RecipeIdea {
   title: string
   description: string
@@ -44,6 +52,13 @@ export interface ComboFAQs {
 
 // Recipe ideas organized by combo slug
 export const recipeIdeasBySlug: Record<string, RecipeIdea[]> = {
+  // Single ingredient page recipes
+  ...proteinRecipes1,
+  ...proteinRecipes2,
+  ...baseRecipes,
+  ...pantryRecipes,
+
+  // Combo page recipes
   // Chicken Breast + Pasta
   'chicken-breast-pasta': [
     {
@@ -726,10 +741,23 @@ export const recipeIdeasBySlug: Record<string, RecipeIdea[]> = {
       difficulty: 'easy',
     },
   ],
+
+  // Combo recipe upgrades (full data overrides preview-only entries above)
+  ...comboRecipesUpgrade,
+  // New combo page recipes
+  ...comboRecipesNew1,
+  ...comboRecipesNew2,
 }
 
 // FAQs organized by combo slug
 export const faqsBySlug: Record<string, FAQ[]> = {
+  // Single ingredient page FAQs
+  ...proteinFaqs1,
+  ...proteinFaqs2,
+  ...baseFaqs,
+  ...pantryFaqs,
+
+  // Combo page FAQs
   'chicken-breast-pasta': [
     {
       question: 'What pasta goes best with chicken?',
@@ -890,6 +918,11 @@ export const faqsBySlug: Record<string, FAQ[]> = {
       answer: 'Properly stored in an airtight container, ground beef pasta will last 3-4 days in the refrigerator. It also freezes well for up to 3 months.',
     },
   ],
+
+  // Combo FAQ upgrades and new combo FAQs
+  ...comboFaqsUpgrade,
+  ...comboFaqsNew1,
+  ...comboFaqsNew2,
 }
 
 // Helper function to get recipe ideas for a combo

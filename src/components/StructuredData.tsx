@@ -109,6 +109,8 @@ export function RecipeSchemaList({ recipes, comboTitle }: { recipes: RecipeIdea[
           ...(recipe.cookTime != null && { cookTime: toIsoDuration(recipe.cookTime) }),
           ...(recipe.servings != null && { recipeYield: `${recipe.servings} servings` }),
           ...(recipe.cuisine && { recipeCuisine: recipe.cuisine }),
+          datePublished: '2026-02-11',
+          dateModified: '2026-02-11',
           recipeCategory: 'Dinner',
           recipeIngredient: recipe.ingredients,
           recipeInstructions: recipe.instructions!.map((step, idx) => ({

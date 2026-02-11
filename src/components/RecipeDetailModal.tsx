@@ -158,6 +158,7 @@ export function RecipeDetailModal({ recipe, onClose }: RecipeDetailModalProps) {
                   </div>
                 )}
               </div>
+              <p className="text-[10px] text-muted-foreground/60 text-center mt-2">* Approximate values. Nutrition may vary based on ingredients and portions.</p>
             </div>
           )}
 

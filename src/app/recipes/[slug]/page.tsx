@@ -80,6 +80,11 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       url: `${baseUrl}/recipes/${params.slug}`,
       type: 'website',
     },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+    },
     // Smart indexing: only index pages with rich content
     robots: isIndexable 
       ? { index: true, follow: true }
@@ -103,9 +108,15 @@ function InternalLink({ href, children }: { href: string; children: React.ReactN
 function IngredientPage({ ingredient }: { ingredient: Ingredient }) {
   const relatedPages = getRelatedPages(ingredient.slug)
   const combos = getIngredientCombos().filter((c) => c.ingredients.includes(ingredient.slug))
+  const recipeIdeas = getRecipeIdeas(ingredient.slug)
+  const faqs = getFAQs(ingredient.slug)
+  const hasIdeas = hasRecipeIdeas(ingredient.slug)
   
-  // Get related ingredients for suggested adds
-  const relatedIngredients = ingredients
+  // Get initial ingredients for the recipe builder
+  const initialIngredients = [ingredient.name.toLowerCase()]
+  
+  // Get related ingredients for suggested adds (use contextual add-ins if available)
+  const relatedIngredients = ingredient.commonAddIns || ingredients
     .filter((i) => i.slug !== ingredient.slug)
     .slice(0, 8)
     .map((i) => i.name.toLowerCase())
@@ -118,6 +129,10 @@ function IngredientPage({ ingredient }: { ingredient: Ingredient }) {
 
   return (
     <div className="space-y-12">
+      {/* Structured Data */}
+      {hasIdeas && <RecipeIdeasSchema title={`${ingredient.name} Recipes`} ideas={recipeIdeas} />}
+      {hasIdeas && <RecipeSchemaList recipes={recipeIdeas} comboTitle={`${ingredient.name} Recipes`} />}
+
       {/* Breadcrumbs */}
       <Breadcrumbs items={breadcrumbItems} />
 
@@ -127,12 +142,82 @@ function IngredientPage({ ingredient }: { ingredient: Ingredient }) {
           {ingredient.name} Recipes
         </h1>
         <p className="mt-4 text-lg text-muted-foreground max-w-3xl mx-auto">
-          {ingredient.description} Discover delicious {ingredient.name.toLowerCase()} dinner ideas, 
-          from quick weeknight meals to impressive dishes. Find the perfect recipe for what you have on hand.
+          {ingredient.extendedIntro || `${ingredient.description} Discover delicious ${ingredient.name.toLowerCase()} dinner ideas, from quick weeknight meals to impressive dishes. Find the perfect recipe for what you have on hand.`}
         </p>
       </section>
 
-      {/* Popular combinations - CONTENT FIRST */}
+      {/* Static Recipe Ideas - Satisfies search intent immediately */}
+      {hasIdeas && (
+        <RecipeIdeasGrid
+          title={`Top ${ingredient.name} Dinner Ideas`}
+          ideas={recipeIdeas}
+        />
+      )}
+
+      {/* Flavor Directions - Contextual unique content */}
+      {ingredient.flavorDirections && ingredient.flavorDirections.length > 0 && (
+        <section>
+          <h2 className="text-xl font-semibold text-foreground mb-4">Flavor Directions</h2>
+          <div className="grid gap-4 sm:grid-cols-3">
+            {ingredient.flavorDirections.map((direction) => (
+              <div
+                key={direction.name}
+                className="rounded-lg border border-border bg-card p-4"
+              >
+                <h3 className="font-semibold text-foreground mb-2">{direction.name}</h3>
+                <ul className="space-y-1">
+                  {direction.suggestions.map((suggestion) => (
+                    <li key={suggestion} className="text-sm text-muted-foreground flex items-center gap-2">
+                      <span className="text-primary">•</span>
+                      {suggestion}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* Popular Add-Ins - Contextual unique content */}
+      {ingredient.commonAddIns && ingredient.commonAddIns.length > 0 && (
+        <section>
+          <h2 className="text-xl font-semibold text-foreground mb-4">Popular Add-Ins</h2>
+          <div className="flex flex-wrap gap-2">
+            {ingredient.commonAddIns.map((addIn) => (
+              <span
+                key={addIn}
+                className="inline-flex items-center rounded-full border border-border bg-muted px-3 py-1 text-sm text-muted-foreground"
+              >
+                {addIn}
+              </span>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* Substitutions - Contextual unique content */}
+      {ingredient.substitutions && ingredient.substitutions.length > 0 && (
+        <section>
+          <h2 className="text-xl font-semibold text-foreground mb-4">Easy Substitutions</h2>
+          <div className="grid gap-4 sm:grid-cols-2">
+            {ingredient.substitutions.map((sub) => (
+              <div
+                key={sub.original}
+                className="rounded-lg border border-border bg-card p-4"
+              >
+                <p className="text-sm text-muted-foreground">
+                  <span className="font-medium text-foreground">Swap {sub.original}</span>
+                  {' → '}
+                  {sub.alternatives.join(', ')}
+                </p>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* Popular combinations */}
       {combos.length > 0 && (
         <section>
           <h2 className="text-xl font-semibold text-foreground mb-4">
@@ -165,11 +250,16 @@ function IngredientPage({ ingredient }: { ingredient: Ingredient }) {
           Add more ingredients and preferences to get personalized recipe ideas.
         </p>
         <RecipeBuilder 
-          initialIngredients={[ingredient.name.toLowerCase()]}
+          initialIngredients={initialIngredients}
           suggestedIngredients={relatedIngredients}
           compact
         />
       </section>
+
+      {/* FAQ Section */}
+      {faqs.length > 0 && (
+        <FAQSection faqs={faqs} />
+      )}
 
       {/* Related searches - internal links */}
       {relatedPages.length > 0 && (
@@ -607,6 +697,13 @@ export default function RecipeSlugPage({ params }: PageProps) {
         {page.type === 'appliance' && <AppliancePage page={page.data} />}
         {page.type === 'time' && <TimePage page={page.data} />}
       </main>
+
+      {/* Content freshness signal */}
+      <div className="mx-auto max-w-5xl px-4 md:px-6 mt-12">
+        <p className="text-xs text-muted-foreground/60 text-center">
+          Last updated February 2026
+        </p>
+      </div>
 
       {/* Footer with more internal links */}
       <footer className="border-t border-border bg-muted/30 py-12 mt-16">

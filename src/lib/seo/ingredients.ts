@@ -8,11 +8,28 @@ export interface Ingredient {
   description: string
 }
 
+export interface FlavorDirection {
+  name: string
+  suggestions: string[]
+}
+
+export interface Substitution {
+  original: string
+  alternatives: string[]
+}
+
 export interface IngredientCombo {
   slug: string
   ingredients: string[] // slugs
   title: string
   description: string
+  // Contextual SEO fields
+  extendedIntro?: string
+  commonAddIns?: string[]
+  flavorDirections?: FlavorDirection[]
+  substitutions?: Substitution[]
+  queryVariations?: string[]
+  indexable?: boolean // true = index, false = noindex
 }
 
 export interface ConstraintPage {
@@ -170,54 +187,134 @@ export const ingredients: Ingredient[] = [
 // Generate smart ingredient combinations
 export function getIngredientCombos(): IngredientCombo[] {
   const combos: IngredientCombo[] = [
-    // Protein + Carb combos (most searched)
+    // Protein + Carb combos (most searched) - TOP TIER with full SEO content
     {
       slug: 'chicken-breast-rice',
       ingredients: ['chicken-breast', 'rice'],
       title: 'Chicken and Rice Recipes',
       description: 'Simple, satisfying chicken and rice dinner ideas.',
+      extendedIntro: 'Looking for easy chicken and rice dinner ideas? Whether you\'re wondering what to make with chicken breast and rice or need quick chicken rice dinner ideas, we\'ve got you covered. From classic chicken fried rice to creamy casseroles, here are the best ways to turn these pantry staples into a satisfying meal.',
+      commonAddIns: ['broccoli', 'peas', 'bell peppers', 'mushrooms', 'corn', 'soy sauce', 'garlic', 'onions'],
+      flavorDirections: [
+        { name: 'Asian', suggestions: ['soy sauce', 'sesame oil', 'ginger', 'green onions', 'sriracha'] },
+        { name: 'Tex-Mex', suggestions: ['cumin', 'lime', 'cilantro', 'black beans', 'salsa'] },
+        { name: 'Mediterranean', suggestions: ['lemon', 'oregano', 'feta', 'olives', 'sun-dried tomatoes'] },
+      ],
+      substitutions: [
+        { original: 'white rice', alternatives: ['brown rice', 'quinoa', 'cauliflower rice'] },
+        { original: 'chicken breast', alternatives: ['chicken thighs', 'rotisserie chicken', 'tofu'] },
+      ],
+      queryVariations: ['chicken and rice recipes', 'what to make with chicken and rice', 'easy chicken rice dinner', 'chicken rice bowl ideas'],
+      indexable: true,
     },
     {
       slug: 'chicken-breast-pasta',
       ingredients: ['chicken-breast', 'pasta'],
       title: 'Chicken Pasta Recipes',
       description: 'Creamy, zesty, and comforting chicken pasta dishes.',
+      extendedIntro: 'Chicken and pasta is a weeknight dinner staple for good reason. Whether you\'re in the mood for creamy Alfredo, zesty lemon butter, or a rich Tuscan-style sauce, these recipes deliver satisfying meals in 30 minutes or less. Find your new favorite chicken pasta recipe.',
+      commonAddIns: ['garlic', 'parmesan', 'spinach', 'sun-dried tomatoes', 'cream', 'lemon', 'basil', 'mushrooms'],
+      flavorDirections: [
+        { name: 'Creamy Italian', suggestions: ['alfredo sauce', 'parmesan', 'garlic', 'cream', 'Italian herbs'] },
+        { name: 'Light & Fresh', suggestions: ['lemon', 'olive oil', 'capers', 'white wine', 'fresh herbs'] },
+        { name: 'Spicy', suggestions: ['Cajun seasoning', 'red pepper flakes', 'jalapeños', 'chipotle'] },
+      ],
+      substitutions: [
+        { original: 'chicken breast', alternatives: ['chicken thighs', 'shrimp', 'Italian sausage'] },
+        { original: 'heavy cream', alternatives: ['half-and-half', 'cream cheese', 'Greek yogurt'] },
+      ],
+      queryVariations: ['chicken pasta recipes', 'creamy chicken pasta', 'easy chicken pasta dinner', 'what to make with chicken and pasta'],
+      indexable: true,
     },
     {
       slug: 'ground-beef-rice',
       ingredients: ['ground-beef', 'rice'],
       title: 'Ground Beef and Rice Recipes',
       description: 'Hearty ground beef and rice one-pot meals.',
+      extendedIntro: 'Ground beef and rice is a budget-friendly combination that feeds a crowd. From Korean-inspired beef bowls to cheesy casseroles, these recipes turn simple ingredients into delicious family dinners. Discover the best ways to pair these pantry staples.',
+      commonAddIns: ['onions', 'bell peppers', 'tomatoes', 'cheese', 'soy sauce', 'garlic', 'corn', 'beans'],
+      flavorDirections: [
+        { name: 'Asian', suggestions: ['soy sauce', 'ginger', 'sesame oil', 'green onions', 'sriracha'] },
+        { name: 'Tex-Mex', suggestions: ['cumin', 'chili powder', 'salsa', 'cheese', 'jalapeños'] },
+        { name: 'Mediterranean', suggestions: ['oregano', 'feta', 'lemon', 'cucumber', 'tzatziki'] },
+      ],
+      substitutions: [
+        { original: 'white rice', alternatives: ['brown rice', 'cauliflower rice', 'quinoa'] },
+        { original: 'ground beef', alternatives: ['ground turkey', 'ground lamb', 'ground pork'] },
+      ],
+      queryVariations: ['ground beef and rice recipes', 'beef rice bowls', 'easy ground beef rice dinner', 'what to make with hamburger meat and rice'],
+      indexable: true,
     },
     {
       slug: 'ground-beef-pasta',
       ingredients: ['ground-beef', 'pasta'],
       title: 'Ground Beef Pasta Recipes',
       description: 'Classic comfort food with ground beef and pasta.',
+      extendedIntro: 'Ground beef and pasta is the ultimate comfort food combo. Whether you\'re craving a quick weeknight spaghetti or a cheesy baked ziti, these recipes transform simple ingredients into family favorites. From classic Bolognese to kid-friendly cheeseburger mac, find your perfect ground beef pasta recipe.',
+      commonAddIns: ['onions', 'garlic', 'bell peppers', 'mushrooms', 'Italian seasoning', 'parmesan', 'ricotta'],
+      flavorDirections: [
+        { name: 'Italian', suggestions: ['marinara', 'basil', 'oregano', 'parmesan', 'red wine'] },
+        { name: 'Tex-Mex', suggestions: ['taco seasoning', 'salsa', 'jalapeños', 'cheddar', 'sour cream'] },
+        { name: 'American Comfort', suggestions: ['cheddar', 'cream cheese', 'Worcestershire', 'mustard'] },
+      ],
+      substitutions: [
+        { original: 'ground beef', alternatives: ['ground turkey', 'ground pork', 'plant-based crumbles'] },
+        { original: 'regular pasta', alternatives: ['whole wheat pasta', 'gluten-free pasta', 'zucchini noodles'] },
+      ],
+      queryVariations: ['ground beef pasta recipes', 'easy beef pasta dinner', 'what to make with ground beef and pasta', 'hamburger pasta recipes'],
+      indexable: true,
     },
     {
       slug: 'ground-beef-potatoes',
       ingredients: ['ground-beef', 'potatoes'],
       title: 'Ground Beef and Potato Recipes',
       description: 'Filling ground beef and potato dinners.',
+      extendedIntro: 'Ground beef and potatoes is comfort food at its finest. Whether you\'re making a classic shepherd\'s pie, a quick skillet hash, or loaded stuffed potatoes, this hearty combination is perfect for feeding a hungry family. Discover the best ways to combine these affordable staples into delicious dinners.',
+      commonAddIns: ['onions', 'cheese', 'garlic', 'peas', 'carrots', 'corn', 'green beans', 'sour cream'],
+      flavorDirections: [
+        { name: 'Classic American', suggestions: ['Worcestershire sauce', 'cheddar', 'onion soup mix', 'sour cream'] },
+        { name: 'Tex-Mex', suggestions: ['cumin', 'chili powder', 'salsa', 'jalapeños', 'Mexican cheese'] },
+        { name: 'Mediterranean', suggestions: ['oregano', 'feta', 'tomatoes', 'olives', 'lemon'] },
+      ],
+      substitutions: [
+        { original: 'russet potatoes', alternatives: ['Yukon gold', 'red potatoes', 'sweet potatoes'] },
+        { original: 'ground beef', alternatives: ['ground lamb', 'ground turkey', 'plant-based crumbles'] },
+      ],
+      queryVariations: ['ground beef and potato recipes', 'hamburger and potatoes', 'what to make with ground beef and potatoes', 'beef potato skillet'],
+      indexable: true,
     },
     {
       slug: 'chicken-breast-potatoes',
       ingredients: ['chicken-breast', 'potatoes'],
       title: 'Chicken and Potato Recipes',
       description: 'One-pan chicken and potato dinner ideas.',
+      indexable: true,
     },
     {
       slug: 'pork-chops-rice',
       ingredients: ['pork-chops', 'rice'],
       title: 'Pork Chops and Rice Recipes',
       description: 'Easy pork chop dinners served over rice.',
+      indexable: true,
     },
     {
       slug: 'sausage-pasta',
       ingredients: ['sausage', 'pasta'],
       title: 'Sausage Pasta Recipes',
       description: 'Quick Italian sausage pasta dishes.',
+      extendedIntro: 'Sausage and pasta is a match made in comfort food heaven. Whether you prefer sweet Italian sausage, spicy links, or smoked kielbasa, these recipes bring bold flavor to your table fast. From creamy vodka sauce to classic marinara, find your perfect sausage pasta combination.',
+      commonAddIns: ['bell peppers', 'onions', 'spinach', 'sun-dried tomatoes', 'parmesan', 'cream', 'garlic', 'red pepper flakes'],
+      flavorDirections: [
+        { name: 'Italian Classic', suggestions: ['marinara', 'basil', 'parmesan', 'oregano', 'fennel'] },
+        { name: 'Creamy', suggestions: ['heavy cream', 'parmesan', 'white wine', 'garlic', 'spinach'] },
+        { name: 'Cajun', suggestions: ['Cajun seasoning', 'bell peppers', 'onions', 'andouille', 'cream'] },
+      ],
+      substitutions: [
+        { original: 'Italian sausage', alternatives: ['chicken sausage', 'turkey sausage', 'andouille', 'kielbasa'] },
+        { original: 'penne', alternatives: ['rigatoni', 'orecchiette', 'shells', 'spaghetti'] },
+      ],
+      queryVariations: ['sausage pasta recipes', 'Italian sausage pasta', 'easy sausage pasta dinner', 'what to make with sausage and pasta'],
+      indexable: true,
     },
     {
       slug: 'sausage-rice',
@@ -290,6 +387,19 @@ export function getIngredientCombos(): IngredientCombo[] {
       ingredients: ['chicken-breast', 'frozen-broccoli'],
       title: 'Chicken and Broccoli Recipes',
       description: 'Healthy chicken and broccoli stir-fries and bakes.',
+      extendedIntro: 'Chicken and broccoli is a healthy, delicious combination that\'s a staple in kitchens everywhere. Whether you\'re craving Chinese takeout-style stir-fry or a creamy Alfredo bake, these recipes make weeknight dinners easy and nutritious. Learn how to make restaurant-quality chicken and broccoli at home.',
+      commonAddIns: ['garlic', 'soy sauce', 'sesame oil', 'ginger', 'rice', 'noodles', 'cheese', 'cream'],
+      flavorDirections: [
+        { name: 'Asian Stir-Fry', suggestions: ['soy sauce', 'oyster sauce', 'ginger', 'garlic', 'sesame seeds'] },
+        { name: 'Creamy Italian', suggestions: ['alfredo sauce', 'parmesan', 'garlic', 'pasta', 'Italian herbs'] },
+        { name: 'Lemon Herb', suggestions: ['lemon juice', 'garlic', 'thyme', 'olive oil', 'white wine'] },
+      ],
+      substitutions: [
+        { original: 'chicken breast', alternatives: ['chicken thighs', 'tofu', 'shrimp'] },
+        { original: 'broccoli', alternatives: ['broccolini', 'Chinese broccoli', 'asparagus'] },
+      ],
+      queryVariations: ['chicken and broccoli recipe', 'Chinese chicken broccoli', 'healthy chicken broccoli', 'easy chicken broccoli stir fry'],
+      indexable: true,
     },
   ]
 

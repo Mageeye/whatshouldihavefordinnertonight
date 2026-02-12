@@ -8,6 +8,9 @@ import { pantryRecipes, pantryFaqs } from './recipes/pantry-recipes'
 import { comboRecipesUpgrade, comboFaqsUpgrade } from './recipes/combo-recipes-upgrade'
 import { comboRecipesNew1, comboFaqsNew1 } from './recipes/combo-recipes-new-1'
 import { comboRecipesNew2, comboFaqsNew2 } from './recipes/combo-recipes-new-2'
+import { dietRecipes1, dietFaqs1 } from './recipes/diet-recipes-1'
+import { dietRecipes2, dietFaqs2 } from './recipes/diet-recipes-2'
+import { dietRecipes3, dietFaqs3 } from './recipes/diet-recipes-3'
 
 export interface RecipeIdea {
   title: string
@@ -747,6 +750,11 @@ export const recipeIdeasBySlug: Record<string, RecipeIdea[]> = {
   // New combo page recipes
   ...comboRecipesNew1,
   ...comboRecipesNew2,
+
+  // Diet page recipes
+  ...dietRecipes1,
+  ...dietRecipes2,
+  ...dietRecipes3,
 }
 
 // FAQs organized by combo slug
@@ -923,6 +931,11 @@ export const faqsBySlug: Record<string, FAQ[]> = {
   ...comboFaqsUpgrade,
   ...comboFaqsNew1,
   ...comboFaqsNew2,
+
+  // Diet page FAQs
+  ...dietFaqs1,
+  ...dietFaqs2,
+  ...dietFaqs3,
 }
 
 // Helper function to get recipe ideas for a combo

@@ -60,6 +60,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       isIndexable = page.data.indexable ?? false
       break
     case 'diet':
+      title = page.data.metaTitle
+      description = `${page.data.description} Browse our top-rated ${page.data.title.toLowerCase()} with full recipes, nutrition info, and smart ingredient swaps.`
+      isIndexable = true
+      break
     case 'appliance':
     case 'time':
       title = page.data.metaTitle
@@ -483,21 +487,114 @@ function DietPage({ page }: { page: ConstraintPage }) {
   const relatedPages = getRelatedPages(page.slug)
   const dietOption = dietSlugToOption[page.slug]
   const suggestedIngredients = getSuggestedIngredientsForDiet(page.slug)
+  const recipeIdeas = getRecipeIdeas(page.slug)
+  const faqs = getFAQs(page.slug)
+  const hasIdeas = hasRecipeIdeas(page.slug)
+
+  // Build breadcrumbs
+  const breadcrumbItems = [
+    { name: 'Recipes', href: '/recipes' },
+    { name: page.title, href: `/recipes/${page.slug}` },
+  ]
 
   return (
     <div className="space-y-12">
-      {/* Hero section */}
+      {/* Structured Data */}
+      {hasIdeas && <RecipeIdeasSchema title={page.title} ideas={recipeIdeas} />}
+      {hasIdeas && <RecipeSchemaList recipes={recipeIdeas} comboTitle={page.title} />}
+
+      {/* Breadcrumbs */}
+      <Breadcrumbs items={breadcrumbItems} />
+
+      {/* Hero section with extended intro */}
       <section className="text-center">
         <h1 className="text-3xl font-bold tracking-tight text-foreground md:text-4xl">
           {page.title}
         </h1>
-        <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
-          {page.description} Generate personalized {page.title.toLowerCase()} with our AI-powered tool below.
+        <p className="mt-4 text-lg text-muted-foreground max-w-3xl mx-auto">
+          {page.extendedIntro || `${page.description} Generate personalized ${page.title.toLowerCase()} with our AI-powered tool below.`}
         </p>
       </section>
 
-      {/* Embedded Recipe Builder with diet pre-selected */}
-      <section>
+      {/* Static Recipe Ideas - Satisfies search intent immediately */}
+      {hasIdeas && (
+        <RecipeIdeasGrid
+          title={`Top ${page.title}`}
+          ideas={recipeIdeas}
+        />
+      )}
+
+      {/* Flavor Directions - Contextual unique content */}
+      {page.flavorDirections && page.flavorDirections.length > 0 && (
+        <section>
+          <h2 className="text-xl font-semibold text-foreground mb-4">Flavor Directions</h2>
+          <div className="grid gap-4 sm:grid-cols-3">
+            {page.flavorDirections.map((direction) => (
+              <div
+                key={direction.name}
+                className="rounded-lg border border-border bg-card p-4"
+              >
+                <h3 className="font-semibold text-foreground mb-2">{direction.name}</h3>
+                <ul className="space-y-1">
+                  {direction.suggestions.map((suggestion) => (
+                    <li key={suggestion} className="text-sm text-muted-foreground flex items-center gap-2">
+                      <span className="text-primary">•</span>
+                      {suggestion}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* Popular Add-Ins - Contextual unique content */}
+      {page.commonAddIns && page.commonAddIns.length > 0 && (
+        <section>
+          <h2 className="text-xl font-semibold text-foreground mb-4">Popular Ingredients</h2>
+          <div className="flex flex-wrap gap-2">
+            {page.commonAddIns.map((addIn) => (
+              <span
+                key={addIn}
+                className="inline-flex items-center rounded-full border border-border bg-muted px-3 py-1 text-sm text-muted-foreground"
+              >
+                {addIn}
+              </span>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* Substitutions - Contextual unique content */}
+      {page.substitutions && page.substitutions.length > 0 && (
+        <section>
+          <h2 className="text-xl font-semibold text-foreground mb-4">Smart Swaps</h2>
+          <div className="grid gap-4 sm:grid-cols-2">
+            {page.substitutions.map((sub) => (
+              <div
+                key={sub.original}
+                className="rounded-lg border border-border bg-card p-4"
+              >
+                <p className="text-sm text-muted-foreground">
+                  <span className="font-medium text-foreground">Swap {sub.original}</span>
+                  {' → '}
+                  {sub.alternatives.join(', ')}
+                </p>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* Recipe Generator - Now positioned after static content */}
+      <section className="rounded-xl border-2 border-primary/20 bg-primary/5 p-6">
+        <h2 className="text-xl font-semibold text-foreground mb-2 text-center">
+          Generate Your Perfect {page.title.replace(' Ideas', '').replace(' Meals', ' Meal').replace(' Dinners', ' Dinner')} Recipe
+        </h2>
+        <p className="text-muted-foreground text-center mb-6">
+          Add your favorite ingredients and preferences to get personalized {page.title.toLowerCase()}.
+        </p>
         <RecipeBuilder 
           initialDietaryRequirements={dietOption ? [dietOption] : []}
           suggestedIngredients={suggestedIngredients}
@@ -505,10 +602,15 @@ function DietPage({ page }: { page: ConstraintPage }) {
         />
       </section>
 
+      {/* FAQ Section */}
+      {faqs.length > 0 && (
+        <FAQSection faqs={faqs} />
+      )}
+
       {/* Popular ingredients for this diet */}
       <section>
         <h2 className="text-xl font-semibold text-foreground mb-4">
-          Popular Ingredients for {page.title}
+          Explore by Ingredient
         </h2>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {ingredients.slice(0, 8).map((ing) => (

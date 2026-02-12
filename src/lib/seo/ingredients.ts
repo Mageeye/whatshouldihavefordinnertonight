@@ -45,6 +45,12 @@ export interface ConstraintPage {
   metaTitle: string
   description: string
   keywords: string[]
+  // pSEO content fields (matching combo/ingredient page template)
+  extendedIntro?: string
+  commonAddIns?: string[]
+  flavorDirections?: FlavorDirection[]
+  substitutions?: Substitution[]
+  queryVariations?: string[]
 }
 
 // Your 20 hero ingredients
@@ -828,6 +834,20 @@ export const dietPages: ConstraintPage[] = [
     metaTitle: 'Easy Keto Dinner Ideas | Low-Carb Recipes',
     description: 'Low-carb, high-fat dinner recipes for your keto lifestyle.',
     keywords: ['keto', 'low carb', 'ketogenic', 'high fat'],
+    extendedIntro: 'Looking for easy keto dinner ideas that actually taste amazing? From creamy garlic butter salmon to bacon-wrapped chicken thighs, these high-fat, low-carb recipes keep you in ketosis without sacrificing flavor. Every recipe stays under 10g net carbs per serving so you can enjoy dinner stress-free.',
+    commonAddIns: ['avocado', 'bacon', 'cheese', 'butter', 'coconut oil', 'cauliflower', 'heavy cream', 'olive oil'],
+    flavorDirections: [
+      { name: 'Mediterranean Keto', suggestions: ['olive oil', 'feta cheese', 'olives', 'lemon', 'fresh herbs'] },
+      { name: 'Classic American', suggestions: ['bacon', 'cheddar', 'butter', 'ranch seasoning', 'cream cheese'] },
+      { name: 'Asian-Inspired', suggestions: ['coconut aminos', 'sesame oil', 'ginger', 'chili garlic sauce', 'lime'] },
+    ],
+    substitutions: [
+      { original: 'rice', alternatives: ['cauliflower rice', 'shirataki rice', 'broccoli rice'] },
+      { original: 'pasta', alternatives: ['zucchini noodles', 'shirataki noodles', 'spaghetti squash'] },
+      { original: 'bread', alternatives: ['lettuce wraps', 'cloud bread', 'cheese crisps'] },
+      { original: 'potatoes', alternatives: ['turnips', 'radishes', 'cauliflower mash'] },
+    ],
+    queryVariations: ['keto dinner ideas', 'easy keto recipes', 'keto dinner recipes', 'low carb keto meals', 'what to eat for dinner on keto'],
   },
   {
     slug: 'low-carb-dinners',
@@ -835,6 +855,20 @@ export const dietPages: ConstraintPage[] = [
     metaTitle: 'Low Carb Dinner Recipes | Easy Ideas',
     description: 'Satisfying dinner ideas that keep carbs in check.',
     keywords: ['low carb', 'reduced carb', 'healthy'],
+    extendedIntro: 'Need low carb dinner ideas that the whole family will love? These satisfying recipes prove that cutting carbs does not mean cutting flavor. From zucchini noodle stir-fries to stuffed peppers and grilled proteins, every recipe keeps you full without the carb crash.',
+    commonAddIns: ['zucchini', 'cauliflower', 'eggs', 'cheese', 'avocado', 'mushrooms', 'bell peppers', 'leafy greens'],
+    flavorDirections: [
+      { name: 'Mediterranean', suggestions: ['lemon', 'fresh herbs', 'olive oil', 'capers', 'artichokes'] },
+      { name: 'Latin-Inspired', suggestions: ['cumin', 'lime', 'roasted peppers', 'cilantro', 'avocado'] },
+      { name: 'Asian-Light', suggestions: ['ginger', 'tamari', 'bok choy', 'sesame seeds', 'rice vinegar'] },
+    ],
+    substitutions: [
+      { original: 'potatoes', alternatives: ['turnips', 'celery root', 'cauliflower'] },
+      { original: 'noodles', alternatives: ['shirataki noodles', 'zucchini noodles', 'hearts of palm pasta'] },
+      { original: 'breadcrumbs', alternatives: ['almond flour', 'crushed pork rinds', 'parmesan crisps'] },
+      { original: 'flour tortillas', alternatives: ['cheese crisps', 'lettuce wraps', 'low-carb tortillas'] },
+    ],
+    queryVariations: ['low carb dinner ideas', 'low carb dinner recipes', 'easy low carb meals', 'healthy low carb dinners', 'low carb meals for dinner'],
   },
   {
     slug: 'high-protein-meals',
@@ -842,6 +876,20 @@ export const dietPages: ConstraintPage[] = [
     metaTitle: 'High Protein Dinner Ideas | Protein-Packed Recipes',
     description: 'Protein-packed dinners for muscle building and satiety.',
     keywords: ['high protein', 'protein rich', 'muscle building'],
+    extendedIntro: 'Want high protein dinner ideas that fuel your goals and taste incredible? Whether you are building muscle, losing weight, or just want to stay full longer, these protein-packed recipes deliver 30g+ per serving. From grilled chicken power bowls to salmon and lentil dishes, hitting your protein targets has never been this easy.',
+    commonAddIns: ['eggs', 'Greek yogurt', 'quinoa', 'black beans', 'cottage cheese', 'edamame', 'lentils', 'chicken breast'],
+    flavorDirections: [
+      { name: 'Mediterranean Power', suggestions: ['chicken', 'chickpeas', 'tahini', 'cucumber', 'feta'] },
+      { name: 'Asian Protein Bowl', suggestions: ['tofu', 'edamame', 'brown rice', 'soy sauce', 'sriracha'] },
+      { name: 'Tex-Mex Fuel', suggestions: ['black beans', 'grilled chicken', 'salsa', 'Greek yogurt', 'lime'] },
+    ],
+    substitutions: [
+      { original: 'chicken', alternatives: ['turkey breast', 'lean pork', 'tofu', 'tempeh'] },
+      { original: 'beef', alternatives: ['bison', 'venison', 'extra-lean ground turkey'] },
+      { original: 'rice', alternatives: ['quinoa', 'farro', 'bulgur wheat'] },
+      { original: 'pasta', alternatives: ['lentil pasta', 'chickpea pasta', 'edamame noodles'] },
+    ],
+    queryVariations: ['high protein dinner ideas', 'high protein meals', 'protein packed dinner recipes', 'high protein dinner recipes', 'easy high protein meals'],
   },
   {
     slug: 'vegetarian-dinners',
@@ -849,6 +897,20 @@ export const dietPages: ConstraintPage[] = [
     metaTitle: 'Easy Vegetarian Dinner Ideas | Meatless Recipes',
     description: 'Delicious meatless dinner ideas the whole family will love.',
     keywords: ['vegetarian', 'meatless', 'plant-based'],
+    extendedIntro: 'Looking for vegetarian dinner ideas that even meat-lovers will enjoy? These hearty meatless recipes go way beyond salads. From creamy mushroom risotto to crispy chickpea tacos and loaded veggie stir-fries, these plant-powered dinners are satisfying, flavorful, and ready in under an hour.',
+    commonAddIns: ['tofu', 'black beans', 'lentils', 'chickpeas', 'mushrooms', 'eggs', 'cheese', 'nutritional yeast'],
+    flavorDirections: [
+      { name: 'Indian', suggestions: ['curry paste', 'coconut milk', 'chickpeas', 'garam masala', 'cilantro'] },
+      { name: 'Italian', suggestions: ['marinara', 'fresh basil', 'mozzarella', 'eggplant', 'ricotta'] },
+      { name: 'Mexican', suggestions: ['black beans', 'roasted peppers', 'corn', 'avocado', 'lime crema'] },
+    ],
+    substitutions: [
+      { original: 'ground beef', alternatives: ['lentils', 'crumbled tofu', 'mushroom-walnut crumble', 'textured vegetable protein'] },
+      { original: 'chicken', alternatives: ['extra-firm tofu', 'seitan', 'jackfruit', 'cauliflower steaks'] },
+      { original: 'fish sauce', alternatives: ['soy sauce', 'miso paste', 'liquid aminos'] },
+      { original: 'heavy cream', alternatives: ['cashew cream', 'coconut cream', 'silken tofu blend'] },
+    ],
+    queryVariations: ['vegetarian dinner ideas', 'meatless dinner recipes', 'easy vegetarian meals', 'vegetarian recipes for dinner', 'best vegetarian dinners'],
   },
   {
     slug: 'gluten-free-dinners',
@@ -856,6 +918,20 @@ export const dietPages: ConstraintPage[] = [
     metaTitle: 'Gluten Free Dinner Recipes | Easy Ideas',
     description: 'Tasty gluten-free dinner recipes for every night.',
     keywords: ['gluten free', 'celiac', 'wheat free'],
+    extendedIntro: 'Need gluten-free dinner ideas that do not taste like a compromise? These naturally gluten-free recipes and smart swaps make every night delicious. From Asian stir-fries with tamari to Mexican bowls with corn tortillas, most of the world\'s best cuisines are already gluten-free — you just need the right recipes.',
+    commonAddIns: ['rice', 'potatoes', 'quinoa', 'corn tortillas', 'tamari', 'rice noodles', 'almond flour', 'cornstarch'],
+    flavorDirections: [
+      { name: 'Asian (Naturally GF)', suggestions: ['tamari', 'rice noodles', 'sesame oil', 'rice vinegar', 'fresh ginger'] },
+      { name: 'Mexican (Corn-Based)', suggestions: ['corn tortillas', 'black beans', 'salsa verde', 'lime', 'queso fresco'] },
+      { name: 'Mediterranean', suggestions: ['rice', 'grilled proteins', 'roasted vegetables', 'olive oil', 'lemon'] },
+    ],
+    substitutions: [
+      { original: 'pasta', alternatives: ['rice pasta', 'corn pasta', 'zucchini noodles', 'rice noodles'] },
+      { original: 'soy sauce', alternatives: ['tamari', 'coconut aminos', 'liquid aminos'] },
+      { original: 'flour', alternatives: ['almond flour', 'rice flour', 'tapioca starch', 'oat flour (certified GF)'] },
+      { original: 'breadcrumbs', alternatives: ['crushed rice crackers', 'GF panko', 'ground almonds', 'cornmeal'] },
+    ],
+    queryVariations: ['gluten free dinner ideas', 'gluten free dinner recipes', 'easy gluten free meals', 'celiac friendly dinners', 'wheat free dinner recipes'],
   },
   {
     slug: 'dairy-free-dinners',
@@ -863,6 +939,20 @@ export const dietPages: ConstraintPage[] = [
     metaTitle: 'Dairy Free Dinner Ideas | Lactose Free Recipes',
     description: 'Creamy, satisfying dinners without the dairy.',
     keywords: ['dairy free', 'lactose free', 'no milk'],
+    extendedIntro: 'Craving creamy, comforting dinners without the dairy? These dairy-free recipes use smart swaps like coconut cream, cashew sauce, and nutritional yeast to deliver the richness you love — minus the lactose. From Thai coconut curries to creamy pasta with cashew Alfredo, you will never miss the milk.',
+    commonAddIns: ['coconut milk', 'nutritional yeast', 'cashews', 'avocado', 'olive oil', 'coconut cream', 'tahini', 'oat milk'],
+    flavorDirections: [
+      { name: 'Asian (Naturally DF)', suggestions: ['coconut milk', 'lemongrass', 'fish sauce', 'lime', 'Thai basil'] },
+      { name: 'Middle Eastern', suggestions: ['tahini', 'olive oil', 'lemon', 'sumac', 'pomegranate'] },
+      { name: 'Caribbean', suggestions: ['coconut milk', 'jerk seasoning', 'plantains', 'scotch bonnet', 'allspice'] },
+    ],
+    substitutions: [
+      { original: 'butter', alternatives: ['olive oil', 'coconut oil', 'avocado oil', 'vegan butter'] },
+      { original: 'heavy cream', alternatives: ['full-fat coconut cream', 'cashew cream', 'silken tofu blend'] },
+      { original: 'cheese', alternatives: ['nutritional yeast', 'cashew cheese', 'dairy-free shreds'] },
+      { original: 'yogurt', alternatives: ['coconut yogurt', 'cashew yogurt', 'oat-based yogurt'] },
+    ],
+    queryVariations: ['dairy free dinner ideas', 'dairy free dinner recipes', 'lactose free meals', 'dairy free recipes for dinner', 'easy dairy free dinners'],
   },
 ]
 
